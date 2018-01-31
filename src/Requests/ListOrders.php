@@ -3,10 +3,10 @@
 use Vleks\SDK\Model as BaseModel;
 use Vleks\SDK\Exceptions;
 
-class ListProducts extends BaseModel
+class ListOrders extends BaseModel
 {
     /**
-     * Construct new Vleks\SDK\Requests\ListProducts
+     * Construct new Vleks\SDK\Requests\ListOrders
      *
      * @param   mixed   $data   DOMElement or associative array to construct from
      * @return  void
