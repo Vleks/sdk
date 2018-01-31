@@ -71,6 +71,7 @@ class Client
 
     private function convertListProductsRequest($request)
     {
+        $messageContent = array ();
         $messageHeaders = array (
             'Entity'     => 'Product',
             'Action'     => 'List'
@@ -84,9 +85,13 @@ class Client
             $messageHeaders['Offset'] = $request->getOffset();
         }
 
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
         return array(
             self::MESSAGE_HEADERS => $messageHeaders,
-            self::MESSAGE_BODY    => null
+            self::MESSAGE_BODY    => $messageContent
         );
     }
 
@@ -218,7 +223,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 443,
+            CURLOPT_PORT           => 433,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,
@@ -262,6 +267,19 @@ class Client
         }
 
         $xml .= '</Header>';
+
+        if (!empty ($converted[self::MESSAGE_BODY])) {
+            foreach ($converted[self::MESSAGE_BODY] as $propertyName => $propertyValue) {
+                if (is_array ($propertyValue)) {
+                    foreach ($propertyValue as $value) {
+                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $propertyName, $value->toXMLFragment());
+                    }
+                } else {
+                    $xml .= sprintf('<%1$s>%2$s</%1$s>', $propertyName, $propertyValue->toXMLFragment());
+                }
+            }
+        }
+
         $xml .= '</VleksRequest>';
 
         return $xml;

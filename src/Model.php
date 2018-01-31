@@ -174,7 +174,7 @@ abstract class Model
      *
      * @return  string  XML fragment representation of this object
      */
-    protected function toXMLFragment()
+    public function toXMLFragment()
     {
         $xml = '';
 
