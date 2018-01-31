@@ -1,11 +1,17 @@
 # Vleks SDK for PHP
 
+[![Latest Stable Version](https://poser.pugx.org/vleks/sdk/v/stable)](https://packagist.org/packages/vleks/sdk)
+[![Total Downloads](https://poser.pugx.org/vleks/sdk/downloads)](https://packagist.org/packages/vleks/sdk)
+[![Latest Unstable Version](https://poser.pugx.org/vleks/sdk/v/unstable)](https://packagist.org/packages/vleks/sdk)
+[![License](https://poser.pugx.org/vleks/sdk/license)](https://packagist.org/packages/vleks/sdk)
+[![composer.lock](https://poser.pugx.org/vleks/sdk/composerlock)](https://packagist.org/packages/vleks/sdk)
+
 ## Installation
 
 It's recommended that you use [Composer](https://getcomposer.org/) to install the SDK.
 
 ```
-composer require vleks/vleks-sdk
+composer require vleks/sdk
 ```
 
 This will install the Vleks SDK.<br />
