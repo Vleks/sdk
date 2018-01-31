@@ -156,6 +156,7 @@ class Client
 
     private function convertListShipmentsRequest($request)
     {
+        $messageContent = array ();
         $messageHeaders = array (
             'Entity'     => 'Shipment',
             'Action'     => 'List'
@@ -169,9 +170,13 @@ class Client
             $messageHeaders['Offset'] = $request->getOffset();
         }
 
+        if ($request->hasShipments()) {
+            $messageContent['Shipment'] = $request->getShipments();
+        }
+
         return array(
             self::MESSAGE_HEADERS => $messageHeaders,
-            self::MESSAGE_BODY    => null
+            self::MESSAGE_BODY    => $messageContent
         );
     }
     
@@ -304,7 +309,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 433,
+            CURLOPT_PORT           => 443,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,
