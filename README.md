@@ -5,7 +5,7 @@
 It's recommended that you use [Composer](https://getcomposer.org/) to install the SDK.
 
 ```
-composer require vleks/vleks-sdk
+composer require vleks/sdk
 ```
 
 This will install the Vleks SDK.<br />
