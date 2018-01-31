@@ -1,13 +1,12 @@
 <?php namespace Vleks\SDK\Requests;
 
-use Vleks\SDK\Model;
+use Vleks\SDK\Model as BaseModel;
 use Vleks\SDK\Exceptions;
-use Vleks\SDK\Entities\Product;
 
-class ListProducts extends Model
+class ListOrders extends BaseModel
 {
     /**
-     * Construct new Vleks\SDK\Requests\ListProducts
+     * Construct new Vleks\SDK\Requests\ListOrders
      *
      * @param   mixed   $data   DOMElement or associative array to construct from
      * @return  void
@@ -15,9 +14,8 @@ class ListProducts extends Model
     public function __construct($data = null)
     {
         $this->fields = array (
-            'Limit'   => array ('value' => null, 'type' => 'int'),
-            'Offset'  => array ('value' => null, 'type' => 'int'),
-            'Product' => array ('value' => array(), 'type' => array(Product::class))
+            'Limit'  => array ('value' => null, 'type' => 'int'),
+            'Offset' => array ('value' => null, 'type' => 'int')
         );
 
         parent::__construct($data);
@@ -91,55 +89,5 @@ class ListProducts extends Model
     public function hasOffset()
     {
         return !is_null($this->fields['Offset']['value']);
-    }
-
-    /**
-     * Sets the value of the Product property
-     *
-     * @param   int     $value
-     * @return  this instance
-     */
-    public function setProduct(array $value)
-    {
-        $this->fields['Product']['value'] = $value;
-        return $this;
-    }
-
-    /**
-     * Gets the value of the Product property
-     *
-     * @return  mixed   Product property value
-     */
-    public function getProduct()
-    {
-        return $this->fields['Product']['value'];
-    }
-
-    /**
-     * Checks if the Product property has been set
-     *
-     * @return  bool    True if the Product property has been set, false otherwise
-     */
-    public function hasProduct()
-    {
-        return !is_null($this->fields['Product']['value']);
-    }
-
-    /**
-     * Helper methods for convenience
-     */
-    public function setProducts(array $value)
-    {
-        return $this->setProduct($value);
-    }
-
-    public function getProducts()
-    {
-        return $this->getProduct();
-    }
-
-    public function hasProducts()
-    {
-        return $this->hasProduct();
     }
 }

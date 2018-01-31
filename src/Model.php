@@ -232,6 +232,9 @@ abstract class Model
             case 'string':
                 return (string) $var == $var ? (string) $var : null;
                 break;
+            case 'datetime':
+                return  date ('Y-m-d\TH:i:s\Z', strtotime($var)) == $var ?  $var : null;
+                break;
         }
 
         throw new Exceptions\ClientException('Unknown data format "' . $this->escapeXML($format) . '" provided.');

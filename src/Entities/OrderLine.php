@@ -69,7 +69,7 @@ class OrderLine extends BaseModel
         return !is_null($this->fields['VleksID']['value']);
     }
     
-    public function hasSKU ($value)
+    public function setSKU ($value)
     {
         $this->fields['SKU']['value'] = $value;
         return $this;
@@ -85,9 +85,9 @@ class OrderLine extends BaseModel
         return !is_null($this->fields['SKU']['value']);
     }
 
-    public function setQuantityOrdered ((int) $value)
+    public function setQuantityOrdered ($value)
     {
-        $this->fields['QuantityOrdered']['value'] = $value;
+        $this->fields['QuantityOrdered']['value'] = (int) $value;
         return $this;
     }
 
@@ -101,9 +101,9 @@ class OrderLine extends BaseModel
         return !is_null($this->fields['QuantityOrdered']['value']);
     }
 
-    public function setQuantityShipped ((int) $value)
+    public function setQuantityShipped ($value)
     {
-        $this->fields['QuantityShipped']['value'] = $value;
+        $this->fields['QuantityShipped']['value'] = (int) $value;
         return $this;
     }
 

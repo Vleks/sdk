@@ -64,6 +64,44 @@ class Client
 
         return $result;
     }
+    
+    /**
+     * List Orders 
+     *
+     * @param   Vleks\SDK\Requests\ListOrders $request
+     * @return  Vleks\SDK\Results\ListOrders
+     */
+    public function listOrders($request)
+    {
+        if (!$request instanceof Requests\ListOrders) {
+            $request = new Requests\ListOrders($request);
+        }
+
+        $response = $this->invoke($this->convertListOrdersRequest($request));
+        $result   = Results\ListOrders::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+    
+    /**
+     * List Shipments 
+     *
+     * @param   Vleks\SDK\Requests\ListShipments $request
+     * @return  Vleks\SDK\Results\ListShipments
+     */
+    public function listShipments($request)
+    {
+        if (!$request instanceof Requests\ListShipments) {
+            $request = new Requests\ListShipments($request);
+        }
+
+        $response = $this->invoke($this->convertListShipmentsRequest($request));
+        $result   = Results\ListShipments::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
 
     ############################################################################
     # INFORMATION CONVERTION METHODS
@@ -94,6 +132,49 @@ class Client
             self::MESSAGE_BODY    => $messageContent
         );
     }
+    
+    private function convertListOrdersRequest($request)
+    {
+        $messageHeaders = array (
+            'Entity'     => 'Order',
+            'Action'     => 'List'
+        );
+
+        if ($request->hasLimit()) {
+            $messageHeaders['Limit'] = $request->getLimit();
+        }
+
+        if ($request->hasOffset()) {
+            $messageHeaders['Offset'] = $request->getOffset();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => null
+        );
+    }
+
+    private function convertListShipmentsRequest($request)
+    {
+        $messageHeaders = array (
+            'Entity'     => 'Shipment',
+            'Action'     => 'List'
+        );
+
+        if ($request->hasLimit()) {
+            $messageHeaders['Limit'] = $request->getLimit();
+        }
+
+        if ($request->hasOffset()) {
+            $messageHeaders['Offset'] = $request->getOffset();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => null
+        );
+    }
+    
 
     ############################################################################
     # CLIENT CONNECTION METHODS

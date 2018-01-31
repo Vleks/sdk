@@ -101,7 +101,7 @@ class Shipment extends BaseModel
         return !is_null($this->fields['Address']['value']);
     }
     
-    public function setOrderLines ((array) $value)
+    public function setOrderLines (array $value)
     {
         $this->fields['OrderLines']['value'] = $value;
         return $this;
