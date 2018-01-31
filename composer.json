@@ -1,0 +1,35 @@
+{
+    "name": "vleks/vleks-sdk",
+    "description": "A PHP client SDK for the Vleks.com API",
+    "version": "0.1.0",
+    "type": "library",
+    "keywords": ["api", "sdk", "vleks", "vleks.com"],
+    "homepage": "https://www.vleks.com",
+    "time": "2018-01-29",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Madern",
+            "email": "mike@adena.nl",
+            "homepage": "https://www.adena.nl",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "support@vleks.com",
+        "issues": "https://github.com/Vleks/vleks-sdk/issues",
+        "wiki": "https://github.com/Vleks/vleks-sdk/wiki",
+        "source": "https://github.com/Vleks/vleks-sdk"
+    },
+    "require": {
+        "php": ">=5.6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vleks\\SDK\\": "src/"
+        }
+    }
+}
