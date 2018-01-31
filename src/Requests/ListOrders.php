@@ -15,7 +15,9 @@ class ListOrders extends BaseModel
     {
         $this->fields = array (
             'Limit'  => array ('value' => null, 'type' => 'int'),
-            'Offset' => array ('value' => null, 'type' => 'int')
+            'Offset' => array ('value' => null, 'type' => 'int'),
+            'Period' => array ('value' => null, 'type' => 'string')
+            
         );
 
         parent::__construct($data);
@@ -90,4 +92,51 @@ class ListOrders extends BaseModel
     {
         return !is_null($this->fields['Offset']['value']);
     }
+    
+    /**
+     * Sets the value of the Period property
+     *
+     * @param   int     $value
+     * @return  this instance
+     */
+    public function setPeriod($value)
+    {
+        if (preg_match ('/\//', $value)) {
+            $dates = explode ('/', $value);
+            $start_date = strtotime ($dates[0]);
+            $end_date   = strtotime ($dates[1]);
+            $now        = strtotime ('now');
+            
+            if ($start_date < $end_date && $now > $end_date && $end_date < strtotime ($start_date. "+31 days")) {
+                $this->fields['Period']['value'] = $value;
+                return $this;
+            } else {
+                throw new Exceptions\ClientException('Given period is out of bounds.');
+            }
+        } else {
+            throw new Exceptions\ClientException('Given period uses "/" as delimiter.');
+        }
+        
+    }
+
+    /**
+     * Gets the value of the Period property
+     *
+     * @return  mixed   Period property value
+     */
+    public function getPeriod()
+    {
+        return $this->fields['Period']['value'];
+    }
+
+    /**
+     * Checks if the Period property has been set
+     *
+     * @return  bool    True if the Period property has been set, false otherwise
+     */
+    public function hasPeriod()
+    {
+        return !is_null($this->fields['Period']['value']);
+    }
+    
 }

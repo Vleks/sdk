@@ -136,6 +136,26 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
+        
+        $exceptionThrown = false;
+        
+        try {
+            $request = new Requests\ListOrders(array ('Period' => '15-12-2017/17-01-2018'));
+        } catch (Exceptions\ClientException $clientException) {
+
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
+        $exceptionThrown = false;
+        
+        try {
+            $request = new Requests\ListOrders(array ('Period' => '01-01-2018/02-02-2018'));
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
 
     }
 

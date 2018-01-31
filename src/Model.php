@@ -233,7 +233,7 @@ abstract class Model
                 return (string) $var == $var ? (string) $var : null;
                 break;
             case 'datetime':
-                return  date ('Y-m-d\TH:i:s\Z', strtotime($var)) == $var ?  $var : null;
+                return  gmdate ('Y-m-d\TH:i:s\Z', strtotime($var)) == $var ?  $var : null;
                 break;
         }
 
