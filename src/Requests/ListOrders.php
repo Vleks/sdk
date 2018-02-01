@@ -17,7 +17,7 @@ class ListOrders extends BaseModel
             'Limit'  => array ('value' => null, 'type' => 'int'),
             'Offset' => array ('value' => null, 'type' => 'int'),
             'Period' => array ('value' => null, 'type' => 'string')
-            
+
         );
 
         parent::__construct($data);
@@ -92,7 +92,7 @@ class ListOrders extends BaseModel
     {
         return !is_null($this->fields['Offset']['value']);
     }
-    
+
     /**
      * Sets the value of the Period property
      *
@@ -102,21 +102,47 @@ class ListOrders extends BaseModel
     public function setPeriod($value)
     {
         if (preg_match ('/\//', $value)) {
-            $dates = explode ('/', $value);
-            $start_date = strtotime ($dates[0]);
-            $end_date   = strtotime ($dates[1]);
-            $now        = strtotime ('now');
-            
-            if ($start_date < $end_date && $now > $end_date && $end_date < strtotime ($start_date. "+31 days")) {
+
+            # Seperate the datetimes
+            $dates = explode('/', $value);
+
+            # Set the current date
+            $current_time = strtotime('now');
+
+            # Set the start date
+            $start_time = strtotime($dates[0]);
+
+            # Set the end date
+            $end_time = strtotime($dates[1]);
+
+            # Set the time of the start time + 31 days
+            $start_time_plus_one_month = strtotime("+31 days", $start_time);
+
+            if (
+                ($start_time < $end_time) &&
+                ($end_time < $current_time) &&
+                ($end_time < $start_time_plus_one_month)
+            ) {
                 $this->fields['Period']['value'] = $value;
                 return $this;
             } else {
                 throw new Exceptions\ClientException('Given period is out of bounds.');
             }
+
+            // $dates = explode ('/', $value);
+            // $start_date = strtotime ($dates[0]);
+            // $end_date   = strtotime ($dates[1]);
+            // $now        = strtotime ('now');
+            // if ($start_date < $end_date && $now > $end_date && $end_date < strtotime ($start_date. "+31 days")) {
+                // $this->fields['Period']['value'] = $value;
+                // return $this;
+            // } else {
+                // throw new Exceptions\ClientException('Given period is out of bounds.');
+            // }
+
         } else {
             throw new Exceptions\ClientException('Given period uses "/" as delimiter.');
         }
-        
     }
 
     /**
@@ -138,5 +164,5 @@ class ListOrders extends BaseModel
     {
         return !is_null($this->fields['Period']['value']);
     }
-    
+
 }
