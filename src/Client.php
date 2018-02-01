@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '0.1.0';
-    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -175,9 +175,9 @@ class Client
     {
         $messageContent = array ();
         $messageHeaders = array (
-            'Entity'     => 'Feed',
-            'Action'     => 'Submit',
-            'Type'       => 'Update'
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Update'
         );
 
         if ($request->hasProducts()) {
@@ -194,8 +194,9 @@ class Client
     {
         $messageContent = array ();
         $messageHeaders = array (
-            'Entity'     => 'Product',
-            'Action'     => 'Delete'
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Delete'
         );
 
         if ($request->hasProducts()) {
@@ -211,8 +212,8 @@ class Client
     private function convertListOrdersRequest($request)
     {
         $messageHeaders = array (
-            'Entity'     => 'Order',
-            'Action'     => 'List'
+            'Entity' => 'Order',
+            'Action' => 'List'
         );
 
         if ($request->hasLimit()) {
@@ -231,9 +232,10 @@ class Client
 
     private function convertListShipmentsRequest($request)
     {
+        $messageContent = array ();
         $messageHeaders = array (
-            'Entity'     => 'Shipment',
-            'Action'     => 'List'
+            'Entity' => 'Shipment',
+            'Action' => 'List'
         );
 
         if ($request->hasLimit()) {
@@ -244,9 +246,13 @@ class Client
             $messageHeaders['Offset'] = $request->getOffset();
         }
 
+        if ($request->hasShipments()) {
+            $messageContent['Shipment'] = $request->getShipments();
+        }
+
         return array(
             self::MESSAGE_HEADERS => $messageHeaders,
-            self::MESSAGE_BODY    => null
+            self::MESSAGE_BODY    => $messageContent
         );
     }
 
@@ -379,7 +385,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 80,
+            CURLOPT_PORT           => 443,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,

@@ -1,6 +1,7 @@
 <?php namespace Vleks\SDK\Requests;
 
 use Vleks\SDK\Model as BaseModel;
+use Vleks\SDK\Entities\Shipment;
 use Vleks\SDK\Exceptions;
 
 class ListShipments extends BaseModel
@@ -14,8 +15,9 @@ class ListShipments extends BaseModel
     public function __construct($data = null)
     {
         $this->fields = array (
-            'Limit'  => array ('value' => null, 'type' => 'int'),
-            'Offset' => array ('value' => null, 'type' => 'int')
+            'Limit'     => array ('value' => null, 'type' => 'int'),
+            'Offset'    => array ('value' => null, 'type' => 'int'),
+            'Shipment'  => array ('value' => array (), 'type' => array(Shipment::class))
         );
 
         parent::__construct($data);
@@ -89,5 +91,55 @@ class ListShipments extends BaseModel
     public function hasOffset()
     {
         return !is_null($this->fields['Offset']['value']);
+    }
+    
+    /**
+     * Sets the value of the Shipment property
+     *
+     * @param   int     $value
+     * @return  this instance
+     */
+    public function setShipment(array $value)
+    {
+        $this->fields['Shipment']['value'] = $value;
+        return $this;
+    }
+
+    /**
+     * Gets the value of the Shipment property
+     *
+     * @return  mixed   Shipment property value
+     */
+    public function getShipment()
+    {
+        return $this->fields['Shipment']['value'];
+    }
+
+    /**
+     * Checks if the Shipment property has been set
+     *
+     * @return  bool    True if the Shipment property has been set, false otherwise
+     */
+    public function hasShipment()
+    {
+        return !is_null($this->fields['Shipment']['value']);
+    }
+
+    /**
+     * Helper methods for convenience
+     */
+    public function setShipments(array $value)
+    {
+        return $this->setShipment($value);
+    }
+
+    public function getShipments()
+    {
+        return $this->getShipment();
+    }
+
+    public function hasShipments()
+    {
+        return $this->hasShipment();
     }
 }

@@ -250,6 +250,26 @@ class ClientTest extends TestCase
 
         $this->assertTrue($exceptionThrown);
 
+        $exceptionThrown = false;
+
+        try {
+            $request = new Requests\ListOrders(array ('Period' => '15-12-2017/17-01-2018'));
+        } catch (Exceptions\ClientException $clientException) {
+
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
+        $exceptionThrown = false;
+
+        try {
+            $request = new Requests\ListOrders(array ('Period' => '01-01-2018/02-02-2018'));
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+
+        $this->assertTrue($exceptionThrown);
+
     }
 
     public function testListOrders() {
@@ -284,8 +304,9 @@ class ClientTest extends TestCase
         }
 
         $this->assertEquals(array_slice ($firstSet, $request->Offset, $request->Limit), $lastSet);
+
     }
-/*
+
     public function testListShipmentsOptions() {
 
         $exceptionThrown = false;
@@ -314,7 +335,11 @@ class ClientTest extends TestCase
 
     public function testListShipments() {
 
-        $request  = new Requests\listShipments();
+        $request  = new Requests\ListShipments();
+        $request->setShipment(array (
+            new Entities\Shipment(array('OrderID' => 'B000PYW')),
+            new Entities\Shipment(array('OrderID' => 'B000PYS'))
+        ));
         $result   = $this->client->listShipments($request);
         $firstSet = array ();
         $lastSet  = array ();
@@ -322,28 +347,20 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Requests\ListShipments::class, $request);
         $this->assertInstanceOf(Results\ListShipments::class, $result);
         $this->assertTrue($result->hasShipment());
-        $this->assertEquals(count($result->getShipments()), 100);
-
-        foreach ($result->getShipments() as $shipment) {
-            array_push ($firstSet, $shipment->getShipmentID());
-        }
-
-        $request = new Requests\ListShipments(array(
-            'Offset' => 50,
-            'Limit'  => 10
-        ));
-        $result  = $this->client->listShipments($request);
-
-        $this->assertInstanceOf(Requests\ListShipments::class, $request);
-        $this->assertInstanceOf(Results\ListShipments::class, $result);
-        $this->assertTrue($result->hasShipment());
-        $this->assertEquals(count($result->getShipments()), $request->getLimit());
-
-        foreach ($result->getShipments() as $shipment) {
-            array_push ($lastSet, $shipment->getShipmentID());
-        }
-
-        $this->assertEquals(array_slice ($firstSet, $request->Offset, $request->Limit), $lastSet);
+        $this->assertEquals(count($result->getShipments()), 2);
     }
- */
+
+    // public function testListSpecificShipments()
+    // {
+        // $request = new Requests\ListShipments();
+        // $request->setShipments(array(
+            // new Entities\Shipment(array('OrderID' => 'B000PRX'))
+        // ));
+        // $result = $this->client->listShipments($request);
+//
+        // $this->assertInstanceOf(Requests\ListShipments::class, $request);
+        // $this->assertInstanceOf(Results\ListShipments::class, $result);
+        // $this->assertTrue($result->hasShipment());
+        // $this->assertEquals(count($result->getShipments()), 5);
+    // }
 }
