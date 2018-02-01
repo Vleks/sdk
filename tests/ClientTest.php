@@ -226,6 +226,20 @@ class ClientTest extends TestCase
         $this->assertEquals(count($result->getFeeds()), 1);
     */}
 
+    public function testDeleteProduct()
+    {/*
+        $request = new Requests\DeleteProducts();
+        $request->setProducts(array (
+            $this->createTestProduct()
+        ));
+        $result = $this->client->deleteProducts($request);
+
+        $this->assertInstanceOf(Requests\DeleteProducts::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
     public function testFeedStatus()
     {
         $request = new Requests\FeedStatus(array (

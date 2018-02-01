@@ -323,7 +323,7 @@ class Client
         );
     }
 
-    private function convertDeleteProductsRequest($reqeust)
+    private function convertDeleteProductsRequest($request)
     {
         $messageContent = array ();
         $messageHeaders = array (
