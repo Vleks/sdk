@@ -263,7 +263,6 @@ class ClientTest extends TestCase
     public function testListOrdersOptions()
     {
         $exceptionThrown = false;
-
         $request = new Requests\ListOrders();
 
         try {
@@ -273,7 +272,6 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
         $exceptionThrown = false;
 
         try {
@@ -283,13 +281,11 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
         $exceptionThrown = false;
 
         try {
-            $request = new Requests\ListOrders(array ('Period' => '15-12-2017/17-01-2018'));
+            $request = new Requests\ListOrders(array ('Period' => '2018-01-30T09:00:00/2018-02-31T10:00:00'));
         } catch (Exceptions\ClientException $clientException) {
-
             $exceptionThrown = true;
         }
 
@@ -305,9 +301,9 @@ class ClientTest extends TestCase
         $this->assertTrue($exceptionThrown);
     }
 
-    public function testListOrders()
-    {
-        $request  = new Requests\listOrders();
+    public function testListOrders() {
+
+        $request  = new Requests\listOrders(array ('Period' => '2018-01-30T09:00:00/2018-02-01T10:00:00'));
         $result   = $this->client->listOrders($request);
         $firstSet = array ();
         $lastSet  = array ();
@@ -402,7 +398,6 @@ class ClientTest extends TestCase
     public function testListShipmentsOptions()
     {
         $exceptionThrown = false;
-
         $request = new Requests\ListShipments();
 
         try {
@@ -412,7 +407,6 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
         $exceptionThrown = false;
 
         try {

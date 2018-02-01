@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '0.1.0';
-    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -648,7 +648,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 80,
+            CURLOPT_PORT           => 443,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,
