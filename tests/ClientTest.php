@@ -1,4 +1,5 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
 use Vleks\SDK\Client;
 use Vleks\SDK\Results;
@@ -29,6 +30,104 @@ class ClientTest extends TestCase
         );
 
         // $this->client->setTestMode(true);
+    }
+
+    public function createTestProduct()
+    {
+        return new Entities\Product(array (
+            'SKU'             => 'SDK.P.001',
+            'EANList'         => array (
+                'EAN' => array (
+                    '1966819785004',
+                    '1966819785011',
+                    '1966819785028',
+                    '1966819785035',
+                    '1966819785042',
+                    '1966819785059'
+                )
+            ),
+            'Condition'       => CONDITION_NEW,
+            'Reference'       => '4922001',
+            'MinDeliveryTime' => 24,
+            'MaxDeliveryTime' => 48,
+            'PurchasePrice'   => array (
+                'Currency' => Enumerables\Currency::EUR,
+                'Amount'   => 12.95
+            ),
+            'MinPrice'        => array (
+                'Currency' => Enumerables\Currency::EUR,
+                'Amount'   => 23
+            ),
+            'MaxPrice'        => array (
+                'Currency' => Enumerables\Currency::EUR,
+                'Amount'   => 42.95
+            ),
+            'SalePrice'       => array (
+                'Currency' => 'EUR',
+                'Amount'   => 25.99
+            ),
+            'Title'           => 'Opeflex SDK P001',
+            'Brand'           => 'Opeflex',
+            'ItemType'        => 'Fictive Product',
+            'Description'     => '<p>
+                <strong>Lorem ipsum dolor sit amet<strong><br />
+                Consectetur adipiscing elit. Pellentesque et justo risus. Etiam luctus massa sit amet lorem molestie consectetur.
+            </p>',
+            'Active'          => true,
+            'TaxPercentage'   => 21.0,
+            'Attributes'      => array (
+                'Attribute' => array (
+                    array (
+                        'Property' => 'adult',
+                        'Value'    => 'no'
+                    ),
+                    array (
+                        'Property' => 'product_link',
+                        'Value'    => 'http://www.domain.ltd/product/sdk-p-001.html'
+                    ),
+                    array (
+                        'Property' => 'product_image',
+                        'Value'    => 'https://picsum.photos/1000/1000'
+                    ),
+                    array (
+                        'Property' => 'additional_product_image',
+                        'Value'    => 'https://picsum.photos/g/1000/1000'
+                    ),
+                    array (
+                        'Property' => 'is_testproduct',
+                        'Value'    => 'yes'
+                    ),
+                    array (
+                        'Property' => 'usp_1',
+                        'Value'    => 'Phasellus eu blandit nisl. Sed.'
+                    ),
+                    array (
+                        'Property' => 'usp_2',
+                        'Value'    => 'Suspendisse potenti. Vestibulum molestie urna.'
+                    ),
+                    array (
+                        'Property' => 'usp_3',
+                        'Value'    => 'Donec egestas felis quis velit.'
+                    ),
+                    array (
+                        'Property' => 'usp_4',
+                        'Value'    => 'Suspendisse eu tincidunt ante. Ut.'
+                    ),
+                    array (
+                        'Property' => 'usp_5',
+                        'Value'    => 'Praesent ultrices eleifend interdum. Proin.'
+                    )
+                )
+            ),
+            'Stock'           => array (
+                'StockLocation' => array (
+                    array (
+                        'LocationID'      => 'B0000B0',
+                        'QuantityInStock' => 2
+                    )
+                )
+            )
+        ));
     }
 
     public function testClient()
@@ -111,6 +210,20 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Results\ListProducts::class, $result);
         $this->assertTrue($result->hasProduct());
         $this->assertEquals(count($result->getProducts()), 5);
+    }
+
+    public function testAddProduct()
+    {
+        $request = new Requests\UpdateProducts();
+        $request->setProducts(array (
+            $this->createTestProduct()
+        ));
+        $result = $this->client->updateProducts($request);
+
+        $this->assertInstanceOf(Requests\UpdateProducts::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
     }
 
     public function testListOrdersOptions() {

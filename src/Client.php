@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '0.1.0';
-    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -64,9 +64,47 @@ class Client
 
         return $result;
     }
-    
+
     /**
-     * List Orders 
+     * Insert/Update products
+     *
+     * @param   Vleks\SDK\Requests\UpdateProducts   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function updateProducts($request)
+    {
+        if (!$request instanceof Requests\UpdateProducts) {
+            $request = new Requests\UpdateProducts($request);
+        }
+
+        $response = $this->invoke($this->convertUpdateProductsRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Delete products
+     *
+     * @param   Vleks\SDK\Requests\DeleteProducts   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function deleteProducts($request)
+    {
+        if (!$request instanceof Requests\DeleteProducts) {
+            $request = new Requests\DeleteProducts($request);
+        }
+
+        $response = $this->invoke($this->convertDeleteProductsRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * List Orders
      *
      * @param   Vleks\SDK\Requests\ListOrders $request
      * @return  Vleks\SDK\Results\ListOrders
@@ -83,9 +121,9 @@ class Client
 
         return $result;
     }
-    
+
     /**
-     * List Shipments 
+     * List Shipments
      *
      * @param   Vleks\SDK\Requests\ListShipments $request
      * @return  Vleks\SDK\Results\ListShipments
@@ -132,7 +170,44 @@ class Client
             self::MESSAGE_BODY    => $messageContent
         );
     }
-    
+
+    private function convertUpdateProductsRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity'     => 'Feed',
+            'Action'     => 'Submit',
+            'Type'       => 'Update'
+        );
+
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertDeleteProductsRequest($reqeust)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity'     => 'Product',
+            'Action'     => 'Delete'
+        );
+
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
     private function convertListOrdersRequest($request)
     {
         $messageHeaders = array (
@@ -174,7 +249,7 @@ class Client
             self::MESSAGE_BODY    => null
         );
     }
-    
+
 
     ############################################################################
     # CLIENT CONNECTION METHODS
@@ -304,7 +379,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 433,
+            CURLOPT_PORT           => 80,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,

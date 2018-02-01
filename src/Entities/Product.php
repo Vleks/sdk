@@ -8,6 +8,12 @@ use Vleks\SDK\Entities\StoreList;
 use Vleks\SDK\Entities\Price;
 use Vleks\SDK\Entities\PriceAndPercentage;
 
+define('CONDITION_NEW',        'NEW');
+define('CONDITION_AS_NEW',     'AS_NEW');
+define('CONDITION_GOOD',       'GOOD');
+define('CONDITION_REASONABLE', 'REASONABLE');
+define('CONDITION_MODERATE',   'MODERATE');
+
 class Product extends Model
 {
     public function __construct($data = null)
@@ -15,7 +21,7 @@ class Product extends Model
         $this->fields = array (
             'VleksID'         => array ('value' => null, 'type' => 'string'),
             'SKU'             => array ('value' => null, 'type' => 'string'),
-            'EANList'         => array ('value' => array(), 'type' => array(EANList::class)),
+            'EANList'         => array ('value' => null, 'type' => EANList::class),
             'Condition'       => array ('value' => null, 'type' => 'string'),
             'Reference'       => array ('value' => null, 'type' => 'string'),
             'MinDeliveryTime' => array ('value' => null, 'type' => 'int'),
@@ -40,7 +46,7 @@ class Product extends Model
             'Length'          => array ('value' => null, 'type' => 'int'),
             'Weight'          => array ('value' => null, 'type' => 'int'),
             'TaxPercentage'   => array ('value' => null, 'type' => 'string'),
-            'Attributes'      => array ('value' => array(), 'type' => array(AttributesList::class)),
+            'Attributes'      => array ('value' => null, 'type' => AttributesList::class),
             'Stock'           => array ('value' => array(), 'type' => array(StockList::class)),
             'Store'           => array ('value' => array(), 'type' => array(StoreList::class))
         );
