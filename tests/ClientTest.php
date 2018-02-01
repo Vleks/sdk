@@ -170,7 +170,7 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Requests\ListProducts::class, $request);
         $this->assertInstanceOf(Results\ListProducts::class, $result);
         $this->assertTrue($result->hasProduct());
-        $this->assertEquals(count($result->getProducts()), 22);
+        $this->assertEquals(count($result->getProducts()), 23);
 
         foreach ($result->getProducts() as $product) {
             array_push ($firstSet, $product->getVleksID());
@@ -213,7 +213,7 @@ class ClientTest extends TestCase
     }
 
     public function testAddProduct()
-    {
+    {/*
         $request = new Requests\UpdateProducts();
         $request->setProducts(array (
             $this->createTestProduct()
@@ -224,6 +224,40 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Results\FeedStatus::class, $result);
         $this->assertTrue($result->hasFeeds());
         $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
+    public function testFeedStatus()
+    {
+        $request = new Requests\FeedStatus(array (
+            'Feed' => array (
+                array ('RequestID' => '7AEC5773-093B-4CBF-A31D-DA1ECC7480D4'),
+                array ('RequestID' => '02D4CF3F-CB8A-4F8E-8F89-EF4E17059D05')
+            )
+        ));
+        $result = $this->client->getFeedStatus($request);
+
+        $this->assertInstanceOf(Requests\FeedStatus::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 2);
+        $this->assertEquals($result->getFeeds()[0]->getRequestID(), $request->getFeeds()[0]->getRequestID());
+    }
+
+    public function testFeedResults()
+    {
+        $request = new Requests\FeedResult(array (
+            'Feed' => array (
+                array ('RequestID' => '7AEC5773-093B-4CBF-A31D-DA1ECC7480D4'),
+                array ('RequestID' => '02D4CF3F-CB8A-4F8E-8F89-EF4E17059D05')
+            )
+        ));
+        $result = $this->client->getFeedResult($request);
+
+        $this->assertInstanceOf(Requests\FeedResult::class, $request);
+        $this->assertInstanceOf(Results\FeedResult::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 2);
+        $this->assertEquals($result->getFeeds()[0]->getRequestID(), $request->getFeeds()[0]->getRequestID());
     }
 
     public function testListOrdersOptions() {

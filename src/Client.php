@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '0.1.0';
-    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -98,6 +98,44 @@ class Client
 
         $response = $this->invoke($this->convertDeleteProductsRequest($request));
         $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Delete products
+     *
+     * @param   Vleks\SDK\Requests\FeedStatus   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function getFeedStatus($request)
+    {
+        if (!$request instanceof Requests\FeedStatus) {
+            $request = new Requests\FeedStatus($request);
+        }
+
+        $response = $this->invoke($this->convertFeedStatusRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Delete products
+     *
+     * @param   Vleks\SDK\Requests\FeedResult   $request
+     * @return  Vleks\SDK\Results\FeedResult
+     */
+    public function getFeedResult($request)
+    {
+        if (!$request instanceof Requests\FeedResult) {
+            $request = new Requests\FeedResult($request);
+        }
+
+        $response = $this->invoke($this->convertFeedResultRequest($request));
+        $result   = Results\FeedResult::fromXML($response['ResponseBody']);
         $result->setResponseHeaders($response['ResponseHeaders']);
 
         return $result;
@@ -201,6 +239,42 @@ class Client
 
         if ($request->hasProducts()) {
             $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertFeedStatusRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Status'
+        );
+
+        if ($request->hasFeeds()) {
+            $messageContent['Feed'] = $request->getFeeds();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertFeedResultRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Result'
+        );
+
+        if ($request->hasFeeds()) {
+            $messageContent['Feed'] = $request->getFeeds();
         }
 
         return array(
@@ -385,7 +459,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 443,
+            CURLOPT_PORT           => 80,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,

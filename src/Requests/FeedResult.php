@@ -14,7 +14,7 @@ class FeedResult extends Model
     public function __construct($data = null)
     {
         $this->fields = array (
-            'Feed' => array ('value' => array (), 'type' => array (Feed::class));
+            'Feed' => array ('value' => array (), 'type' => array (Feed::class))
         );
 
         parent::__construct($data);
