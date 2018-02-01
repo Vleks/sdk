@@ -212,7 +212,7 @@ class ClientTest extends TestCase
         $this->assertEquals(count($result->getProducts()), 5);
     }
 
-    public function testAddProduct()
+    public function testAddOrUpdateProduct()
     {/*
         $request = new Requests\UpdateProducts();
         $request->setProducts(array (
