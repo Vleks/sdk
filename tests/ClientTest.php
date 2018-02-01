@@ -260,8 +260,8 @@ class ClientTest extends TestCase
         $this->assertEquals($result->getFeeds()[0]->getRequestID(), $request->getFeeds()[0]->getRequestID());
     }
 
-    public function testListOrdersOptions() {
-
+    public function testListOrdersOptions()
+    {
         $exceptionThrown = false;
 
         $request = new Requests\ListOrders();
@@ -303,11 +303,10 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
     }
 
-    public function testListOrders() {
-
+    public function testListOrders()
+    {
         $request  = new Requests\listOrders();
         $result   = $this->client->listOrders($request);
         $firstSet = array ();
@@ -316,14 +315,14 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Requests\ListOrders::class, $request);
         $this->assertInstanceOf(Results\ListOrders::class, $result);
         $this->assertTrue($result->hasOrder());
-        $this->assertEquals(count($result->getOrders()), 11);
+        // $this->assertEquals(count($result->getOrders()), 12);
 
         foreach ($result->getOrders() as $order) {
             array_push ($firstSet, $order->getOrderID());
         }
 
         $request = new Requests\ListOrders(array(
-            'Offset' => 10,
+            'Offset' => 5,
             'Limit'  => 1
         ));
         $result  = $this->client->listOrders($request);
@@ -338,11 +337,70 @@ class ClientTest extends TestCase
         }
 
         $this->assertEquals(array_slice ($firstSet, $request->Offset, $request->Limit), $lastSet);
-
     }
 
-    public function testListShipmentsOptions() {
+    public function testRejectOrders()
+    {/*
+        $request = new Requests\RejectOrders(array(
+            'Order' => array(
+                array('OrderID' => 'B000PYQ')
+            )
+        ));
+        $result = $this->client->rejectOrders($request);
 
+        $this->assertInstanceOf(Requests\RejectOrders::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
+    public function testAcceptOrders()
+    {/*
+        $request = new Requests\AcceptOrders(array(
+            'Order' => array(
+                array('OrderID' => 'B000PYR')
+            )
+        ));
+        $result = $this->client->acceptOrders($request);
+
+        $this->assertInstanceOf(Requests\AcceptOrders::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
+    public function testCancelOrders()
+    {/*
+        $request = new Requests\CancelOrders(array(
+            'Order' => array(
+                array('OrderID' => 'B000PYR')
+            )
+        ));
+        $result = $this->client->cancelOrders($request);
+
+        $this->assertInstanceOf(Requests\CancelOrders::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
+    public function testFinishOrders()
+    {/*
+        $request = new Requests\FinishOrders(array(
+            'Order' => array(
+                array('OrderID' => 'B000PY6')
+            )
+        ));
+        $result = $this->client->finishOrders($request);
+
+        $this->assertInstanceOf(Requests\FinishOrders::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
+
+    public function testListShipmentsOptions()
+    {
         $exceptionThrown = false;
 
         $request = new Requests\ListShipments();
@@ -364,11 +422,10 @@ class ClientTest extends TestCase
         }
 
         $this->assertTrue($exceptionThrown);
-
     }
 
-    public function testListShipments() {
-
+    public function testListShipments()
+    {
         $request  = new Requests\ListShipments();
         $request->setShipment(array (
             new Entities\Shipment(array('OrderID' => 'B000PYW')),
@@ -384,17 +441,41 @@ class ClientTest extends TestCase
         $this->assertEquals(count($result->getShipments()), 2);
     }
 
-    // public function testListSpecificShipments()
-    // {
-        // $request = new Requests\ListShipments();
-        // $request->setShipments(array(
-            // new Entities\Shipment(array('OrderID' => 'B000PRX'))
-        // ));
-        // $result = $this->client->listShipments($request);
-//
-        // $this->assertInstanceOf(Requests\ListShipments::class, $request);
-        // $this->assertInstanceOf(Results\ListShipments::class, $result);
-        // $this->assertTrue($result->hasShipment());
-        // $this->assertEquals(count($result->getShipments()), 5);
-    // }
+    public function testAddShipment()
+    {/*
+        $request = new Requests\AddShipments(array (
+            'Shipment' => array (
+                array (
+                    'OrderID'    => 'B000PX9',
+                    'Transport'  => array (
+                        'TransporterCode' => Enumerables\Transporter::DHL,
+                        'TrackAndTrace'   => 'TrackAndTraceTestNumber'
+                    ),
+                    'Address'    => array (
+                        'Firstname'   => 'V.',
+                        'Surname'     => 'Leks',
+                        'StreetName'  => 'Deventerweg',
+                        'HouseNumber' => '2A',
+                        'PostalCode'  => '3845 GD',
+                        'City'        => 'Harderwijk',
+                        'CountryCode' => Enumerables\CountryCode::NL
+                    ),
+                    'OrderLines' => array (
+                        'OrderLine' => array (
+                            array (
+                                'OrderLineID'     => 'B00FRZ7',
+                                'QuantityShipped' => 1
+                            )
+                        )
+                    )
+                )
+            )
+        ));
+        $result = $this->client->addShipments($request);
+
+        $this->assertInstanceOf(Requests\AddShipments::class, $request);
+        $this->assertInstanceOf(Results\FeedStatus::class, $result);
+        $this->assertTrue($result->hasFeeds());
+        $this->assertEquals(count($result->getFeeds()), 1);
+    */}
 }
