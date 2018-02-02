@@ -3,13 +3,13 @@
 use \DOMXPath;
 use \DOMDocument;
 use Vleks\SDK\Model;
-use Vleks\SDK\Entities\Product;
+use Vleks\SDK\Entities\Order;
 use Vleks\SDK\Exceptions\ClientException;
 
-class ListProducts extends Model
+class ListOrders extends Model
 {
     /**
-     * Construct new Vleks\SDK\Results\ListProducts
+     * Construct new Vleks\SDK\Results\ListOrders
      *
      * @param   mixed   $data   DOMElement or associative array to construct from
      * @return  void
@@ -17,7 +17,7 @@ class ListProducts extends Model
     public function __construct($data = null)
     {
         $this->fields = array (
-            'Product'         => array ('value' => array (), 'type' => array(Product::class)),
+            'Order'           => array ('value' => array (), 'type' => array(Order::class)),
             'ResponseHeaders' => array ('value' => array (), 'type' => 'array')
         );
 
@@ -25,10 +25,10 @@ class ListProducts extends Model
     }
 
     /**
-     * Construct new Vleks\SDK\Results\ListProducts from XML string
+     * Construct new Vleks\SDK\Results\ListOrders from XML string
      *
      * @param   string  $xml
-     * @return  object  Vleks\SDK\Results\ListProducts
+     * @return  object  Vleks\SDK\Results\ListOrders
      * @throws  Vleks\SDK\Exceptions\ClientException
      */
     public static function fromXML($xml)
@@ -40,42 +40,42 @@ class ListProducts extends Model
         $response = $xpath->query('//VleksResponse');
 
         if (1 === $response->length) {
-            return new ListProducts($response->item(0));
+            return new ListOrders($response->item(0));
         } else {
-            throw new ClientException('Unable to construct ListProducts response from provided XML.');
+            throw new ClientException('Unable to construct ListOrders response from provided XML.');
         }
     }
 
     /**
-     * Sets the value of the Product property
+     * Sets the value of the Order property
      *
      * @param   array   $value
      * @return  this instance
      */
-    public function setProduct(array $value)
+    public function setOrder(array $value)
     {
-        $this->fields['Product']['value'] = $value;
+        $this->fields['Order']['value'] = $value;
         return $this;
     }
 
     /**
-     * Gets the value of the Product property
+     * Gets the value of the Order property
      *
      * @return  array   Product property value
      */
-    public function getProduct()
+    public function getOrder()
     {
-        return $this->fields['Product']['value'];
+        return $this->fields['Order']['value'];
     }
 
     /**
-     * Checks if the Product property has been set
+     * Checks if the Order property has been set
      *
      * @return  bool    True if the Product property has been set, false otherwise
      */
-    public function hasProduct()
+    public function hasOrder()
     {
-        return !empty($this->fields['Product']['value']);
+        return !empty($this->fields['Order']['value']);
     }
 
     /**
@@ -111,20 +111,20 @@ class ListProducts extends Model
     }
 
     /**
-     * Product property method aliasses for convenience
+     * Order property method aliasses for convenience
      */
-    public function setProducts(array $value)
+    public function setOrders(array $value)
     {
-        return $this->setProduct($value);
+        return $this->setOrder($value);
     }
 
-    public function getProducts()
+    public function getOrders()
     {
-        return $this->getProduct();
+        return $this->getOrder();
     }
 
-    public function hasProducts()
+    public function hasOrders()
     {
-        return $this->hasProduct();
+        return $this->hasOrder();
     }
 }

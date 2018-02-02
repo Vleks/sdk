@@ -88,7 +88,7 @@ abstract class Model
 
                         if (1 <= count($elements)) {
                             foreach ($elements as $element) {
-                                $this->fields[$fieldName]['value'][] = $this->format($element, $fieldType[0]);
+                                $this->fields[$fieldName]['value'][] = $this->formatDOMElementValue($element, $fieldType[0]);
                             }
                         }
                     }
@@ -105,7 +105,7 @@ abstract class Model
                         if (method_exists($this, $setter)) {
                             $this->$setter($array[$fieldName]);
                         } else {
-                            $this->fields[$fieldName]['value'] = $this->format($array[$fieldName], $fieldType);
+                            $this->fields[$fieldName]['value'] = $this->formatDOMElementValue($array[$fieldName], $fieldType);
                         }
                     }
                 }
@@ -141,7 +141,7 @@ abstract class Model
                     if (0 < $elements->length) {
                         foreach ($elements as $element) {
                             $text = $xpath->query('./text()', $element);
-                            $this->fields[$fieldName]['value'][] = $text->item(0)->data;
+                            $this->fields[$fieldName]['value'][] = $this->formatDOMElementValue($text->item(0)->data, $fieldType[0]);
                         }
                     }
                 }
@@ -157,7 +157,7 @@ abstract class Model
                     $data    = null;
 
                     if (1 === $element->length) {
-                        $data = $this->format($element->item(0)->data, $fieldType);
+                        $data = $this->formatDOMElementValue($element->item(0)->data, $fieldType);
                     }
 
                     $this->fields[$fieldName]['value'] = $data;
@@ -174,7 +174,7 @@ abstract class Model
      *
      * @return  string  XML fragment representation of this object
      */
-    protected function toXMLFragment()
+    public function toXMLFragment()
     {
         $xml = '';
 
@@ -187,18 +187,22 @@ abstract class Model
                 if ($this->isNumericArray($fieldType)) {
                     if ($this->isComplexType($fieldType[0])) {
                         foreach ($fieldValue as $item) {
-                            $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $item->toXML());
+                            $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $item->toXMLFragment());
                         }
                     } else {
                         foreach ($fieldValue as $item) {
-                            $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $this->escapeXML($item));
+                            $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $this->escapeXML(
+                                $this->formatXMLFragmentValue($item, $fieldType[0])
+                            ));
                         }
                     }
                 } else {
                     if ($this->isComplexType($fieldType)) {
-                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $fieldValue->toXML());
+                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $fieldValue->toXMLFragment());
                     } else {
-                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $this->escapeXML($fieldValue));
+                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $fieldName, $this->escapeXML(
+                            $this->formatXMLFragmentValue($fieldValue, $fieldType)
+                        ));
                     }
                 }
             }
@@ -214,7 +218,7 @@ abstract class Model
      * @param   string  $format
      * @return  mixed   Formatted variable
      */
-    private function format($var, $format = 'string')
+    private function formatDOMElementValue($var, $format = 'string')
     {
         switch ($format) {
             case 'bool':
@@ -231,6 +235,37 @@ abstract class Model
 
             case 'string':
                 return (string) $var == $var ? (string) $var : null;
+                break;
+
+            case 'datetime':
+                return date ('Y-m-d\TH:i:s\Z', strtotime($var)) == $var ?  $var : null;
+                break;
+        }
+
+        throw new Exceptions\ClientException('Unknown data format "' . $this->escapeXML($format) . '" provided.');
+    }
+
+    /**
+     *
+     */
+    private function formatXMLFragmentValue($var, $format = 'string')
+    {
+        switch ($format) {
+            case 'bool':
+                return $var ? 'true' : 'false';
+                break;
+
+            case 'float':
+                return number_format($var, 2, '.', '');
+                break;
+
+            case 'int':
+            case 'string':
+                return (string) $var;
+                break;
+
+            case 'datetime':
+                return date ('Y-m-d\TH:i:s\Z', strtotime($var));
                 break;
         }
 

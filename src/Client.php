@@ -7,7 +7,7 @@ use Vleks\SDK\Enumerables;
 
 class Client
 {
-    const VERSION         = '0.1.0';
+    const VERSION         = '1.0.0';
     const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
@@ -30,16 +30,6 @@ class Client
         $this->privateKey = $privateKey;
         $this->merchantId = $merchantId;
         $this->clusterUrl = $clusterUrl;
-    }
-
-    public function setTestMode($mode = false)
-    {
-        $this->testMode = $mode;
-    }
-
-    public function skipSslVerification($mode = false)
-    {
-        $this->skipSslVerification = $mode;
     }
 
     ############################################################################
@@ -65,12 +55,222 @@ class Client
         return $result;
     }
 
+    /**
+     * Insert/Update products
+     *
+     * @param   Vleks\SDK\Requests\UpdateProducts   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function updateProducts($request)
+    {
+        if (!$request instanceof Requests\UpdateProducts) {
+            $request = new Requests\UpdateProducts($request);
+        }
+
+        $response = $this->invoke($this->convertUpdateProductsRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Delete products
+     *
+     * @param   Vleks\SDK\Requests\DeleteProducts   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function deleteProducts($request)
+    {
+        if (!$request instanceof Requests\DeleteProducts) {
+            $request = new Requests\DeleteProducts($request);
+        }
+
+        $response = $this->invoke($this->convertDeleteProductsRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Get statusses of requested feeds (changes)
+     *
+     * @param   Vleks\SDK\Requests\FeedStatus   $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function getFeedStatus($request)
+    {
+        if (!$request instanceof Requests\FeedStatus) {
+            $request = new Requests\FeedStatus($request);
+        }
+
+        $response = $this->invoke($this->convertFeedStatusRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Get results of requested feeds (changes)
+     *
+     * @param   Vleks\SDK\Requests\FeedResult   $request
+     * @return  Vleks\SDK\Results\FeedResult
+     */
+    public function getFeedResult($request)
+    {
+        if (!$request instanceof Requests\FeedResult) {
+            $request = new Requests\FeedResult($request);
+        }
+
+        $response = $this->invoke($this->convertFeedResultRequest($request));
+        $result   = Results\FeedResult::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * List Orders
+     *
+     * @param   Vleks\SDK\Requests\ListOrders   $request
+     * @return  Vleks\SDK\Results\ListOrders
+     */
+    public function listOrders($request)
+    {
+        if (!$request instanceof Requests\ListOrders) {
+            $request = new Requests\ListOrders($request);
+        }
+
+        $response = $this->invoke($this->convertListOrdersRequest($request));
+        $result   = Results\ListOrders::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Reject Orders
+     *
+     * @param   Vleks\SDK\Requests\RejectOrders $request
+     * @param   Vleks\SDK\Results\FeedStatus
+     */
+    public function rejectOrders($request)
+    {
+        if (!$request instanceof Requests\RejectOrders) {
+            $request = new Requests\RejectOrders($request);
+        }
+
+        $response = $this->invoke($this->convertRejectOrdersRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Accept Orders
+     *
+     * @param   Vleks\SDK\Requests\AcceptOrders $request
+     * @param   Vleks\SDK\Results\FeedStatus
+     */
+    public function acceptOrders($request)
+    {
+        if (!$request instanceof Requests\AcceptOrders) {
+            $request = new Requests\AcceptOrders($request);
+        }
+
+        $response = $this->invoke($this->convertAcceptOrdersRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Cancel Orders
+     *
+     * @param   Vleks\SDK\Requests\CancelOrders $request
+     * @param   Vleks\SDK\Results\FeedStatus
+     */
+    public function cancelOrders($request)
+    {
+        if (!$request instanceof Requests\CancelOrders) {
+            $request = new Requests\CancelOrders($request);
+        }
+
+        $response = $this->invoke($this->convertCancelOrdersRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Finish Orders
+     *
+     * @param   Vleks\SDK\Requests\FinishOrders $request
+     * @param   Vleks\SDK\Results\FeedStatus
+     */
+    public function finishOrders($request)
+    {
+        if (!$request instanceof Requests\FinishOrders) {
+            $request = new Requests\FinishOrders($request);
+        }
+
+        $response = $this->invoke($this->convertFinishOrdersRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * List Shipments
+     *
+     * @param   Vleks\SDK\Requests\ListShipments    $request
+     * @return  Vleks\SDK\Results\ListShipments
+     */
+    public function listShipments($request)
+    {
+        if (!$request instanceof Requests\ListShipments) {
+            $request = new Requests\ListShipments($request);
+        }
+
+        $response = $this->invoke($this->convertListShipmentsRequest($request));
+        $result   = Results\ListShipments::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Add Shipments
+     *
+     * @param   Vleks\SDK\Requests\AddShipments $request
+     * @return  Vleks\SDK\Results\FeedStatus
+     */
+    public function addShipments($request)
+    {
+        if (!$request instanceof Requests\AddShipments) {
+            $request = new Requests\AddShipments($request);
+        }
+
+        $response = $this->invoke($this->convertAddShipmentsRequest($request));
+        $result   = Results\FeedStatus::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
     ############################################################################
     # INFORMATION CONVERTION METHODS
     ############################################################################
 
     private function convertListProductsRequest($request)
     {
+        $messageContent = array ();
         $messageHeaders = array (
             'Entity'     => 'Product',
             'Action'     => 'List'
@@ -84,9 +284,229 @@ class Client
             $messageHeaders['Offset'] = $request->getOffset();
         }
 
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertUpdateProductsRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Update'
+        );
+
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertDeleteProductsRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Delete'
+        );
+
+        if ($request->hasProducts()) {
+            $messageContent['Product'] = $request->getProducts();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertFeedStatusRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Status'
+        );
+
+        if ($request->hasFeeds()) {
+            $messageContent['Feed'] = $request->getFeeds();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertFeedResultRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Result'
+        );
+
+        if ($request->hasFeeds()) {
+            $messageContent['Feed'] = $request->getFeeds();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertListOrdersRequest($request)
+    {
+        $messageHeaders = array (
+            'Entity' => 'Order',
+            'Action' => 'List'
+        );
+
+        if ($request->hasLimit()) {
+            $messageHeaders['Limit'] = $request->getLimit();
+        }
+
+        if ($request->hasOffset()) {
+            $messageHeaders['Offset'] = $request->getOffset();
+        }
+
         return array(
             self::MESSAGE_HEADERS => $messageHeaders,
             self::MESSAGE_BODY    => null
+        );
+    }
+
+    private function convertRejectOrdersRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Reject'
+        );
+
+        if ($request->hasOrders()) {
+            $messageContent['Order'] = $request->getOrders();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertAcceptOrdersRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Accept'
+        );
+
+        if ($request->hasOrders()) {
+            $messageContent['Order'] = $request->getOrders();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertCancelOrdersRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Cancel'
+        );
+
+        if ($request->hasOrders()) {
+            $messageContent['Order'] = $request->getOrders();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertFinishOrdersRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Finish'
+        );
+
+        if ($request->hasOrders()) {
+            $messageContent['Order'] = $request->getOrders();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertListShipmentsRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Shipment',
+            'Action' => 'List'
+        );
+
+        if ($request->hasLimit()) {
+            $messageHeaders['Limit'] = $request->getLimit();
+        }
+
+        if ($request->hasOffset()) {
+            $messageHeaders['Offset'] = $request->getOffset();
+        }
+
+        if ($request->hasShipments()) {
+            $messageContent['Shipment'] = $request->getShipments();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
+        );
+    }
+
+    private function convertAddShipmentsRequest($request)
+    {
+        $messageContent = array ();
+        $messageHeaders = array (
+            'Entity' => 'Feed',
+            'Action' => 'Submit',
+            'Type'   => 'Add'
+        );
+
+        if ($request->hasShipments()) {
+            $messageContent['Shipment'] = $request->getShipments();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => $messageContent
         );
     }
 
@@ -225,8 +645,8 @@ class Client
             CURLOPT_HTTPHEADER     => $httpHeaders,
             CURLOPT_HEADERFUNCTION => array($this, 'headerCallback'),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => !$this->skipSslVerification,
-            CURLOPT_SSL_VERIFYHOST => !$this->skipSslVerification ? 2 : 0
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2
         );
 
         return $curlOptions;
@@ -262,6 +682,19 @@ class Client
         }
 
         $xml .= '</Header>';
+
+        if (!empty ($converted[self::MESSAGE_BODY])) {
+            foreach ($converted[self::MESSAGE_BODY] as $propertyName => $propertyValue) {
+                if (is_array ($propertyValue)) {
+                    foreach ($propertyValue as $value) {
+                        $xml .= sprintf('<%1$s>%2$s</%1$s>', $propertyName, $value->toXMLFragment());
+                    }
+                } else {
+                    $xml .= sprintf('<%1$s>%2$s</%1$s>', $propertyName, $propertyValue->toXMLFragment());
+                }
+            }
+        }
+
         $xml .= '</VleksRequest>';
 
         return $xml;

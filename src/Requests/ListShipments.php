@@ -1,13 +1,13 @@
 <?php namespace Vleks\SDK\Requests;
 
-use Vleks\SDK\Model;
+use Vleks\SDK\Model as BaseModel;
+use Vleks\SDK\Entities\Shipment;
 use Vleks\SDK\Exceptions;
-use Vleks\SDK\Entities\Product;
 
-class ListProducts extends Model
+class ListShipments extends BaseModel
 {
     /**
-     * Construct new Vleks\SDK\Requests\ListProducts
+     * Construct new Vleks\SDK\Requests\ListShipments
      *
      * @param   mixed   $data   DOMElement or associative array to construct from
      * @return  void
@@ -15,9 +15,9 @@ class ListProducts extends Model
     public function __construct($data = null)
     {
         $this->fields = array (
-            'Limit'   => array ('value' => null, 'type' => 'int'),
-            'Offset'  => array ('value' => null, 'type' => 'int'),
-            'Product' => array ('value' => array(), 'type' => array(Product::class))
+            'Limit'     => array ('value' => null, 'type' => 'int'),
+            'Offset'    => array ('value' => null, 'type' => 'int'),
+            'Shipment'  => array ('value' => array (), 'type' => array(Shipment::class))
         );
 
         parent::__construct($data);
@@ -92,54 +92,54 @@ class ListProducts extends Model
     {
         return !is_null($this->fields['Offset']['value']);
     }
-
+    
     /**
-     * Sets the value of the Product property
+     * Sets the value of the Shipment property
      *
      * @param   int     $value
      * @return  this instance
      */
-    public function setProduct(array $value)
+    public function setShipment(array $value)
     {
-        $this->fields['Product']['value'] = $value;
+        $this->fields['Shipment']['value'] = $value;
         return $this;
     }
 
     /**
-     * Gets the value of the Product property
+     * Gets the value of the Shipment property
      *
-     * @return  mixed   Product property value
+     * @return  mixed   Shipment property value
      */
-    public function getProduct()
+    public function getShipment()
     {
-        return $this->fields['Product']['value'];
+        return $this->fields['Shipment']['value'];
     }
 
     /**
-     * Checks if the Product property has been set
+     * Checks if the Shipment property has been set
      *
-     * @return  bool    True if the Product property has been set, false otherwise
+     * @return  bool    True if the Shipment property has been set, false otherwise
      */
-    public function hasProduct()
+    public function hasShipment()
     {
-        return !is_null($this->fields['Product']['value']);
+        return !is_null($this->fields['Shipment']['value']);
     }
 
     /**
      * Helper methods for convenience
      */
-    public function setProducts(array $value)
+    public function setShipments(array $value)
     {
-        return $this->setProduct($value);
+        return $this->setShipment($value);
     }
 
-    public function getProducts()
+    public function getShipments()
     {
-        return $this->getProduct();
+        return $this->getShipment();
     }
 
-    public function hasProducts()
+    public function hasShipments()
     {
-        return $this->hasProduct();
+        return $this->hasShipment();
     }
 }

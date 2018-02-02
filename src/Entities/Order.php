@@ -11,17 +11,17 @@ class Order extends BaseModel
     {
         $this->fields = array (
             'OrderID'                   => array ('value' => null, 'type' => 'string'),
-            'ReasonInfo'                => array ('value' => null, 'type' => 'string'),
-            'PurchaseDate'              => array ('value' => null, 'type' => 'DateTime'),
+            'ReasonCode'                => array ('value' => 'OTHER', 'type' => 'string'),
+            'PurchaseDate'              => array ('value' => null, 'type' => 'datetime'),
             'Status'                    => array ('value' => null, 'type' => 'string'),
-            'ChannelID'                 => array ('value' => null, 'type' => 'string',
+            'ChannelID'                 => array ('value' => null, 'type' => 'string'),
             'IsBusinessOrder'           => array ('value' => null, 'type' => 'bool'),
             'Address'                   => array ('value' => null, 'type' => AddressData::class),
             'NumberOfShipments'         => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsShipped'      => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsUnshipped'    => array ('value' => null, 'type' => 'int'),
             'OrderTotal'                => array ('value' => null, 'type' => Price::class),
-            'OrderLines'                => array ('value' => array (), 'type' => array (OrderLine::class))                            
+            'OrderLines'                => array ('value' => array (), 'type' => array (OrderLines::class))
         );
 
         parent::__construct($data);
@@ -42,7 +42,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['OrderID']['value']);
     }
-    
+
     public function setReasonInfo ($value)
     {
         $this->fields['ReasonInfo']['value'] = $value;
@@ -58,7 +58,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['ReasonInfo']['value']);
     }
-    
+
     public function setPurchaseDate ($value)
     {
         $this->fields['PurchaseDate']['value'] = $value;
@@ -74,7 +74,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['PurchaseDate']['value']);
     }
-    
+
     public function setStatus ($value)
     {
         $this->fields['Status']['value'] = $value;
@@ -90,7 +90,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['Status']['value']);
     }
-    
+
     public function setChannelID ($value)
     {
         $this->fields['ChannelID']['value'] = $value;
@@ -106,10 +106,10 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['ChannelID']['value']);
     }
-    
-    public function setIsBusinessOrder ((bool) $value)
+
+    public function setIsBusinessOrder ($value)
     {
-        $this->fields['IsBusinessOrder']['value'] = $value;
+        $this->fields['IsBusinessOrder']['value'] = (bool) $value;
         return $this;
     }
 
@@ -121,9 +121,9 @@ class Order extends BaseModel
     public function hasIsBusinessOrder ()
     {
         return !is_null($this->fields['IsBusinessOrder']['value']);
-    }    
-    
-    public function setAddress ( $value)
+    }
+
+    public function setAddress ($value)
     {
         $this->fields['Address']['value'] = $value;
         return $this;
@@ -138,10 +138,10 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['Address']['value']);
     }
-        
-    public function setNumberOfShipments ((int) $value)
+
+    public function setNumberOfShipments ($value)
     {
-        $this->fields['NumberOfShipments']['value'] = $value;
+        $this->fields['NumberOfShipments']['value'] = (int) $value;
         return $this;
     }
 
@@ -154,10 +154,10 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['NumberOfShipments']['value']);
     }
-        
-    public function setNumberOfItemsShipped ((int) $value)
+
+    public function setNumberOfItemsShipped ($value)
     {
-        $this->fields['NumberOfItemsShipped']['value'] = $value;
+        $this->fields['NumberOfItemsShipped']['value'] = (int) $value;
         return $this;
     }
 
@@ -170,10 +170,10 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['NumberOfItemsShipped']['value']);
     }
-        
-    public function setNumberOfItemsUnshipped ((int) $value)
+
+    public function setNumberOfItemsUnshipped ($value)
     {
-        $this->fields['NumberOfItemsUnshipped']['value'] = $value;
+        $this->fields['NumberOfItemsUnshipped']['value'] = (int) $value;
         return $this;
     }
 
@@ -186,7 +186,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['NumberOfItemsUnshipped']['value']);
     }
-        
+
     public function setOrderTotal ($value)
     {
         $this->fields['OrderTotal']['value'] = $value;
@@ -202,8 +202,8 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['OrderTotal']['value']);
     }
-        
-    public function setOrderLines ((array) $value)
+
+    public function setOrderLines (array $value)
     {
         $this->fields['OrderLines']['value'] = $value;
         return $this;

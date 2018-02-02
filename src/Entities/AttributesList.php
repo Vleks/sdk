@@ -3,13 +3,15 @@
 use Vleks\SDK\Model;
 use Vleks\SDK\Entities\Attribute;
 
-class AttributeList extends Model
+class AttributesList extends Model
 {
     public function __construct($data = null)
     {
         $this->fields = array (
             'Attribute' => array ('value' => array(), 'type' => array(Attribute::class))
         );
+
+        parent::__construct($data);
     }
 
     public function setAttribute (array $value)

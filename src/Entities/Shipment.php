@@ -15,7 +15,7 @@ class Shipment extends BaseModel
             'SendDate'        => array ('value' => null, 'type' => 'DateTime'),
             'Transport'       => array ('value' => null, 'type' => Transport::class),
             'Address'         => array ('value' => null, 'type' => AddressData::class),
-            'OrderLines'      => array ('value' => array (), 'type' => array (OrderLine::class))                            
+            'OrderLines'      => array ('value' => null, 'type' => OrderLines::class)
         );
 
         parent::__construct($data);
@@ -36,7 +36,7 @@ class Shipment extends BaseModel
     {
         return !is_null($this->fields['ShipmentID']['value']);
     }
-    
+
     public function setOrderID ($value)
     {
         $this->fields['OrderID']['value'] = $value;
@@ -52,7 +52,7 @@ class Shipment extends BaseModel
     {
         return !is_null($this->fields['OrderID']['value']);
     }
-    
+
     public function setSendDate ($value)
     {
         $this->fields['SendDate']['value'] = $value;
@@ -68,7 +68,7 @@ class Shipment extends BaseModel
     {
         return !is_null($this->fields['SendDate']['value']);
     }
-    
+
     public function setTransport ($value)
     {
         $this->fields['Transport']['value'] = $value;
@@ -84,7 +84,7 @@ class Shipment extends BaseModel
     {
         return !is_null($this->fields['Transport']['value']);
     }
-    
+
     public function setAddress ($value)
     {
         $this->fields['Address']['value'] = $value;
@@ -100,8 +100,8 @@ class Shipment extends BaseModel
     {
         return !is_null($this->fields['Address']['value']);
     }
-    
-    public function setOrderLines ((array) $value)
+
+    public function setOrderLines (array $value)
     {
         $this->fields['OrderLines']['value'] = $value;
         return $this;

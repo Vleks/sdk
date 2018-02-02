@@ -1,25 +1,38 @@
 {
-    "name": "vleks/vleks-sdk",
+    "name": "vleks/sdk",
     "description": "A PHP client SDK for the Vleks.com API",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "type": "library",
     "keywords": ["api", "sdk", "vleks", "vleks.com"],
     "homepage": "https://www.vleks.com",
-    "time": "2018-01-29",
+    "time": "2018-02-02",
     "license": "MIT",
     "authors": [
         {
             "name": "Mike Madern",
-            "email": "mike@adena.nl",
-            "homepage": "https://www.adena.nl",
+            "email": "mike@vleks.com",
+            "homepage": "https://www.vleks.com",
+            "role": "Lead developer"
+        },
+        {
+            "name": "Yannick Berendsen",
+            "email": "yannick@vleks.com",
+            "homepage": "https://www.vleks.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Cas Satter",
+            "email": "cas@vleks.com",
+            "homepage": "https://www.vleks.com",
             "role": "Developer"
         }
     ],
     "support": {
         "email": "support@vleks.com",
-        "issues": "https://github.com/Vleks/vleks-sdk/issues",
-        "wiki": "https://github.com/Vleks/vleks-sdk/wiki",
-        "source": "https://github.com/Vleks/vleks-sdk"
+        "issues": "https://github.com/Vleks/sdk/issues",
+        "wiki": "https://github.com/Vleks/sdk/wiki",
+        "source": "https://github.com/Vleks/sdk",
+        "docs": "http://developer.vleks.com/Getting_Started"
     },
     "require": {
         "php": ">=5.6"
