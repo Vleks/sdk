@@ -32,16 +32,6 @@ class Client
         $this->clusterUrl = $clusterUrl;
     }
 
-    public function setTestMode($mode = false)
-    {
-        $this->testMode = $mode;
-    }
-
-    public function skipSslVerification($mode = false)
-    {
-        $this->skipSslVerification = $mode;
-    }
-
     ############################################################################
     # API ENDPOINT METHODS
     ############################################################################
@@ -655,8 +645,8 @@ class Client
             CURLOPT_HTTPHEADER     => $httpHeaders,
             CURLOPT_HEADERFUNCTION => array($this, 'headerCallback'),
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_SSL_VERIFYPEER => !$this->skipSslVerification,
-            CURLOPT_SSL_VERIFYHOST => !$this->skipSslVerification ? 2 : 0
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2
         );
 
         return $curlOptions;
