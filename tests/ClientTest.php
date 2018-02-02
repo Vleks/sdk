@@ -28,8 +28,6 @@ class ClientTest extends TestCase
             $merchantId,
             $clusterUrl
         );
-
-        // $this->client->setTestMode(true);
     }
 
     public function createTestProduct()
