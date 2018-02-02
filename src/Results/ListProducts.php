@@ -31,7 +31,7 @@ class ListProducts extends Model
      * @return  object  Vleks\SDK\Results\ListProducts
      * @throws  Vleks\SDK\Exceptions\ClientException
      */
-    public function fromXML($xml)
+    public static function fromXML($xml)
     {
         $dom = new DOMDocument();
         $dom->loadXML($xml);
