@@ -1,7 +1,7 @@
 {
     "name": "vleks/sdk",
     "description": "A PHP client SDK for the Vleks.com API",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "type": "library",
     "keywords": ["api", "sdk", "vleks", "vleks.com"],
     "homepage": "https://www.vleks.com",
