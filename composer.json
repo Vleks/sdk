@@ -5,7 +5,7 @@
     "type": "library",
     "keywords": ["api", "sdk", "vleks", "vleks.com"],
     "homepage": "https://www.vleks.com",
-    "time": "2018-01-29",
+    "time": "2018-02-02",
     "license": "MIT",
     "authors": [
         {
@@ -31,7 +31,8 @@
         "email": "support@vleks.com",
         "issues": "https://github.com/Vleks/sdk/issues",
         "wiki": "https://github.com/Vleks/sdk/wiki",
-        "source": "https://github.com/Vleks/sdk"
+        "source": "https://github.com/Vleks/sdk",
+        "docs": "http://developer.vleks.com/Getting_Started"
     },
     "require": {
         "php": ">=5.6"
