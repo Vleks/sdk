@@ -30,4 +30,3 @@ define('VLEKS_MERCHANT_ID', '-- YOUR MERCHANT ID --');
 define('VLEKS_API_CLUSTER', '-- YOUR CLUSTER URL --');
 define('VLEKS_API_PUBLIC_KEY', '-- YOUR PUBLIC KEY --');
 define('VLEKS_API_PRIVATE_KEY', '-- YOUR PRIVATE KEY --');
-define('VLEKS_API_TESTMODE', false);
