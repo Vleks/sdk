@@ -43,20 +43,20 @@ class Order extends BaseModel
         return !is_null($this->fields['OrderID']['value']);
     }
 
-    public function setReasonInfo ($value)
+    public function setReasonCode ($value)
     {
-        $this->fields['ReasonInfo']['value'] = $value;
+        $this->fields['ReasonCode']['value'] = $value;
         return $this;
     }
 
-    public function getReasonInfo ()
+    public function getReasonCode ()
     {
-        return $this->fields['ReasonInfo']['value'];
+        return $this->fields['ReasonCode']['value'];
     }
 
-    public function hasReasonInfo ()
+    public function hasReasonCode ()
     {
-        return !is_null($this->fields['ReasonInfo']['value']);
+        return !is_null($this->fields['ReasonCode']['value']);
     }
 
     public function setPurchaseDate ($value)

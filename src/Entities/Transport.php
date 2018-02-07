@@ -22,7 +22,7 @@ class Transport extends BaseModel
 
     public function getTransporterCode ()
     {
-        return $this->fields['TransportedCode']['value'];
+        return $this->fields['TransporterCode']['value'];
     }
 
     public function hasTransporterCode()

@@ -147,7 +147,7 @@ class FeedResult extends Model
      */
     public function hasResponse()
     {
-        return !is_null($this->fields['Response']['value']);
+        return !empty($this->fields['Response']['value']);
     }
 
     /**
