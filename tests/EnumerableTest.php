@@ -5,7 +5,7 @@ use Vleks\SDK\Enumerables\CountryCode;
 use Vleks\SDK\Enumerables\Currency;
 use Vleks\SDK\Enumerables\Transporter;
 
-class ClientTest extends TestCase
+class EnumerableTest extends TestCase
 {
     public function testGetAllEnumeableOptions()
     {
