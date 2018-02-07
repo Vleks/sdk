@@ -163,6 +163,7 @@ class EntityTest extends TestCase
             'Status'                    => 'testValue',
             'ChannelID'                 => 'testValue',
             'IsBusinessOrder'           => true,
+            'IsFulfillmentOrder'        => true,
             'NumberOfShipments'         => 5,
             'NumberOfItemsShipped'      => 5,
             'NumberOfItemsUnshipped'    => 5
@@ -316,7 +317,7 @@ class EntityTest extends TestCase
 
     public function testStockList()
     {
-        $entity = Entities\Stocklist::class;
+        $entity = Entities\StockList::class;
         
         $entity_fields = array(
             'StockLocation' => array('LocationID' => 'testValue', 'QuantityInStock' => 5)

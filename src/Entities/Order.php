@@ -16,6 +16,7 @@ class Order extends BaseModel
             'Status'                    => array ('value' => null, 'type' => 'string'),
             'ChannelID'                 => array ('value' => null, 'type' => 'string'),
             'IsBusinessOrder'           => array ('value' => null, 'type' => 'bool'),
+            'IsFulfillmentOrder'        => array ('value' => null, 'type' => 'bool'),
             'Address'                   => array ('value' => null, 'type' => AddressData::class),
             'NumberOfShipments'         => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsShipped'      => array ('value' => null, 'type' => 'int'),
@@ -123,6 +124,22 @@ class Order extends BaseModel
         return !is_null($this->fields['IsBusinessOrder']['value']);
     }
 
+    public function setIsFulfillmentOrder ($value)
+    {
+        $this->fields['IsBusinessOrder']['value'] = (bool) $value;
+        return $this;
+    }
+
+    public function getIsFulfillmentOrder ()
+    {
+        return $this->fields['IsBusinessOrder']['value'];
+    }
+
+    public function hasIsFulfillmentOrder ()
+    {
+        return !is_null($this->fields['IsBusinessOrder']['value']);
+    }
+    
     public function setAddress ($value)
     {
         $this->fields['Address']['value'] = $value;
