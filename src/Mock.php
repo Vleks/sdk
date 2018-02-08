@@ -1,5 +1,7 @@
 <?php namespace Vleks\SDK;
+
 use Vleks\SDK\Results;
+
 class Mock
 {
     /**
@@ -12,6 +14,7 @@ class Mock
     {
         return Results\ListProducts::fromXML($this->invoke('listProducts'));
     }
+
     /**
      * Insert/Update products
      *
@@ -22,6 +25,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('updateProducts'));
     }
+
     /**
      * Delete products
      *
@@ -32,6 +36,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('deleteProducts'));
     }
+
     /**
      * Get statusses of requested feeds (changes)
      *
@@ -42,6 +47,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('getFeedStatus'));
     }
+
     /**
      * Get results of requested feeds (changes)
      *
@@ -52,6 +58,7 @@ class Mock
     {
         return Results\FeedResult::fromXML($this->invoke('getFeedResult'));
     }
+
     /**
      * List Orders
      *
@@ -62,6 +69,7 @@ class Mock
     {
         return Results\ListOrders::fromXML($this->invoke('listOrders'));
     }
+
     /**
      * Reject Orders
      *
@@ -72,6 +80,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('rejectOrders'));
     }
+
     /**
      * Accept Orders
      *
@@ -82,6 +91,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('acceptOrders'));
     }
+
     /**
      * Cancel Orders
      *
@@ -92,6 +102,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('cancelOrders'));
     }
+
     /**
      * Finish Orders
      *
@@ -102,6 +113,7 @@ class Mock
     {
         return Results\FeedStatus::fromXML($this->invoke('finishOrders'));
     }
+
     /**
      * List Shipments
      *
@@ -112,6 +124,7 @@ class Mock
     {
         return Results\ListShipments::fromXML($this->invoke('listShipments'));
     }
+
     /**
      * Add Shipments
      *

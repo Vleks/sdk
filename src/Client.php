@@ -7,7 +7,7 @@ use Vleks\SDK\Enumerables;
 
 class Client
 {
-    const VERSION         = '1.0.0';
+    const VERSION         = '2.0.0';
     const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
