@@ -30,7 +30,20 @@ try {
 
     if ($result->hasOrders()) {
         foreach ($result->getOrders() as $order) {
-            var_dump($order->getOrderID() . ':' . $order->getStatus());
+            echo 'Order ID: ' . $order->getOrderID() . "\n";
+            echo 'Status:   ' . $order->getStatus() . "\n";
+
+            if ($order->hasOrderLines()) {
+                echo "\n" . 'Orderline(s):' . "\n";
+
+                $orderLines = $order->getOrderLines();
+
+                foreach ($orderLines->getOrderLine() as $orderLine) {
+                    echo '#' . $orderLine->getOrderLineID() . ' (' . $orderLine->getQuantityOrdered() . 'x - ' . $orderLine->getTitle() . ')' . "\n";
+                }
+            }
+
+            echo "\n----------------------------\n\n";
         }
     }
 } catch (Vleks\SDK\Exceptions\ClientException $clientException) {

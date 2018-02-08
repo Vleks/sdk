@@ -22,7 +22,7 @@ class Order extends BaseModel
             'NumberOfItemsShipped'      => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsUnshipped'    => array ('value' => null, 'type' => 'int'),
             'OrderTotal'                => array ('value' => null, 'type' => Price::class),
-            'OrderLines'                => array ('value' => array (), 'type' => array (OrderLines::class))
+            'OrderLines'                => array ('value' => null, 'type' => OrderLines::class)
         );
 
         parent::__construct($data);
@@ -139,7 +139,7 @@ class Order extends BaseModel
     {
         return !is_null($this->fields['IsBusinessOrder']['value']);
     }
-    
+
     public function setAddress ($value)
     {
         $this->fields['Address']['value'] = $value;
