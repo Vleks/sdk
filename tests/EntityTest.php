@@ -152,6 +152,17 @@ class EntityTest extends TestCase
         $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
+    public function testCount()
+    {
+        $entity = Entities\Count::class;
+        
+        $individual_fields = array(
+            'Result'    => 5
+        );
+        
+        $this->entityTestLoop($entity, $individual_fields);
+    }
+
     public function testOrder()
     {
         $entity = Entities\Order::class;
