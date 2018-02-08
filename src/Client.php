@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '1.0.0';
-    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -565,6 +565,10 @@ class Client
 
     private function reportAnyErrors($responseBody, $status, array $responseHeaders, $checkFor500 = true)
     {
+        if (false === $responseBody && empty($responseHeaders) && 0 === $status) {
+            throw new Exceptions\ClientException('Unable to connect to the API, please check your configuration settings');
+        }
+
         $throw     = false;
         $exception = array (
             'StatusCode'      => $status,
@@ -581,6 +585,21 @@ class Client
                 $exception['XML']      = $responseBody;
                 $exception['Severity'] = $xmlBody->Error->Severity;
                 $exception['Message']  = $xmlBody->Error->Message;
+            }
+
+            if (isset ($xmlBody->Response)) {
+                if (isset($xmlBody->Response->Severity)) {
+                    switch ($xmlBody->Response->Severity) {
+                        case E_ERROR:
+                        case E_USER_ERROR:
+                            $throw = true;
+
+                            $exception['XML']      = $responseBody;
+                            $exception['Severity'] = $xmlBody->Response->Severity;
+                            $exception['Message']  = $xmlBody->Response->Message;
+                            break;
+                    }
+                }
             }
         } elseif ($checkFor500) {
             if (500 <= $status) {
@@ -666,7 +685,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 80,
+            CURLOPT_PORT           => 443,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,
@@ -696,7 +715,10 @@ class Client
         return array (
             'Content-Type: ' . $contentType,
             'X-VleksAPI-Date: ' . $requestDate,
-            'X-VleksAPI-Signature: ' . $signature
+            'X-VleksAPI-Signature: ' . $signature,
+            'Expect: ',
+            'Accept: ',
+            'Transfer-Encoding: chunked'
         );
     }
 
