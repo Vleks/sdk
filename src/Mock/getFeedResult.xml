@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VleksResponse>
+    <Response>
+        <Status>Success</Status>
+        <SKU>5304MS</SKU>
+        <VleksID>DS25634</VleksID>
+        <Message>Product with SKU "5304MS" processed.</Message>
+    </Response>
+    <Response>
+        <Status>Success</Status>
+        <SKU>5304MSA</SKU>
+        <VleksID>B056951</VleksID>
+        <Message>Product with SKU "5304MSA" processed.</Message>
+    </Response>
+</VleksResponse>
