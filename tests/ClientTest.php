@@ -272,6 +272,78 @@ class ClientTest extends TestCase
         $this->assertEquals($result->getFeeds()[0]->getRequestID(), $request->getFeeds()[0]->getRequestID());
     }
 
+    public function testCountOrdersOptions()
+    {
+        $exceptionThrown = false;
+        $request = new Requests\CountOrders();
+        
+        try {
+            $request->setPeriod('01-01-2018/02-02-2018');
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
+        $exceptionThrown = false;
+        
+        try {
+            $request->setPeriod('2018-01-30T09:00:00/2018-02-31T10:00:00');
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
+        $exceptionThrown = false;
+        
+        try {
+            $request = new Requests\CountOrders(array('Period' => '01-01-2018/02-02-2018'));
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
+        $exceptionThrown = false;
+        
+        try {
+            $request = new Requests\CountOrders(array('Period' => '2018-01-30T09:00:00/2018-02-31T10:00:00'));
+        } catch (Exceptions\ClientException $clientException) {
+            $exceptionThrown = true;
+        }
+        
+        $this->assertTrue($exceptionThrown);
+    }
+
+    public function testCountOrders()
+    {
+        $request  = new Requests\CountOrders(array ('Period' => '2018-01-02T09:00:00/2018-02-01T10:00:00'));
+        $result   = $this->client->countOrders($request);
+        $count = $result->getCount();
+
+        $this->assertInstanceOf(Requests\CountOrders::class, $request);
+        $this->assertInstanceOf(Results\CountOrders::class, $result);
+        $this->assertTrue($count->hasResult());
+
+        $request  = new Requests\CountOrders(array ('Period' => '2010-01-02T09:00:00/2010-02-01T10:00:00'));
+        $result  = $this->client->countOrders($request);
+        $count = $result->getCount();
+
+        $this->assertInstanceOf(Requests\CountOrders::class, $request);
+        $this->assertInstanceOf(Results\CountOrders::class, $result);
+        $this->assertTrue($count->hasResult());
+        $this->assertEquals($count->getResult(), 0);
+    }
+
+    public function testCountProducts()
+    {
+        $request  = new Requests\CountProducts();
+        $result   = $this->client->countProducts($request);
+        $count = $result->getCount();
+
+        $this->assertInstanceOf(Requests\CountProducts::class, $request);
+        $this->assertInstanceOf(Results\CountProducts::class, $result);
+        $this->assertTrue($count->hasResult());
+    }
+
     public function testListOrdersOptions()
     {
         $exceptionThrown = false;
@@ -315,7 +387,7 @@ class ClientTest extends TestCase
 
     public function testListOrders() {
 
-        $request  = new Requests\listOrders(array ('Period' => '2018-01-30T09:00:00/2018-02-01T10:00:00'));
+        $request  = new Requests\listOrders(array ('Period' => '2018-01-03T09:00:00/2018-02-01T10:00:00'));
         $result   = $this->client->listOrders($request);
         $firstSet = array ();
         $lastSet  = array ();

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VleksResponse>
+    <Shipment>
+        <ShipmentID></ShipmentID>
+        <OrderID></OrderID>
+        <SendDate></SendDate>
+        <Transport>
+            <TransporterCode></TransporterCode>
+            <TrackAndTrace></TrackAndTrace>
+        </Transport>
+        <Address>
+            <SalutationCode></SalutationCode>
+            <Firstname></Firstname>
+            <Surname></Surname>
+            <StreetName></StreetName>
+            <HouseNumber></HouseNumber>
+            <PostalCode></PostalCode>
+            <City></City>
+            <CountryCode></CountryCode>
+            <Email></Email>
+        </Address>
+        <OrderLines>
+            <OrderLine>
+                <Type></Type>
+                <OrderLineID></OrderLineID>
+                <VleksID></VleksID>
+                <QuantityOrdered></QuantityOrdered>
+                <QuantityShipped></QuantityShipped>
+                <ItemPrice>
+                    <Currency></Currency>
+                    <Amount></Amount>
+                </ItemPrice>
+                <Title></Title>
+            </OrderLine>
+        </OrderLines>
+    </Shipment>
+</VleksResponse>

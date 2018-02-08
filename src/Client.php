@@ -7,7 +7,7 @@ use Vleks\SDK\Enumerables;
 
 class Client
 {
-    const VERSION         = '2.0.0';
+    const VERSION         = '2.1.0';
     const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
@@ -51,6 +51,25 @@ class Client
 
         $response = $this->invoke($this->convertListProductsRequest($request));
         $result   = Results\ListProducts::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Count Products
+     *
+     * @param   Vleks\SDK\Requests\CountProducts   $request
+     * @return  Vleks\SDK\Results\CountProducts
+     */
+    public function countProducts($request)
+    {
+        if (!$request instanceof Requests\CountProducts) {
+            $request = new Requests\CountProducts($request);
+        }
+
+        $response = $this->invoke($this->convertCountProductsRequest($request));
+        $result   = Results\CountProducts::fromXML($response['ResponseBody']);
         $result->setResponseHeaders($response['ResponseHeaders']);
 
         return $result;
@@ -146,6 +165,25 @@ class Client
 
         $response = $this->invoke($this->convertListOrdersRequest($request));
         $result   = Results\ListOrders::fromXML($response['ResponseBody']);
+        $result->setResponseHeaders($response['ResponseHeaders']);
+
+        return $result;
+    }
+
+    /**
+     * Count Orders
+     *
+     * @param   Vleks\SDK\Requests\CountOrders   $request
+     * @return  Vleks\SDK\Results\CountOrders
+     */
+    public function countOrders($request)
+    {
+        if (!$request instanceof Requests\CountOrders) {
+            $request = new Requests\CountOrders($request);
+        }
+
+        $response = $this->invoke($this->convertCountOrdersRequest($request));
+        $result   = Results\CountOrders::fromXML($response['ResponseBody']);
         $result->setResponseHeaders($response['ResponseHeaders']);
 
         return $result;
@@ -269,6 +307,19 @@ class Client
     # INFORMATION CONVERTION METHODS
     ############################################################################
 
+    private function convertCountProductsRequest($request)
+    {
+        $messageHeaders = array (
+            'Entity' => 'Product',
+            'Action' => 'Count'
+        );
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => null
+        );
+    }
+
     private function convertListProductsRequest($request)
     {
         $messageContent = array ();
@@ -369,6 +420,23 @@ class Client
         );
     }
 
+    private function convertCountOrdersRequest($request)
+    {
+        $messageHeaders = array (
+            'Entity' => 'Order',
+            'Action' => 'Count'
+        );
+
+        if ($request->hasPeriod()) {
+            $messageHeaders['Period'] = $request->getPeriod();
+        }
+
+        return array(
+            self::MESSAGE_HEADERS => $messageHeaders,
+            self::MESSAGE_BODY    => null
+        );
+    }
+
     private function convertListOrdersRequest($request)
     {
         $messageHeaders = array (
@@ -382,6 +450,10 @@ class Client
 
         if ($request->hasOffset()) {
             $messageHeaders['Offset'] = $request->getOffset();
+        }
+
+        if ($request->hasPeriod()) {
+            $messageHeaders['Period'] = $request->getPeriod();
         }
 
         return array(
