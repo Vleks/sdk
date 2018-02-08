@@ -7,7 +7,7 @@ use Vleks\SDK\Enumerables;
 
 class Client
 {
-    const VERSION         = '2.0.0';
+    const VERSION         = '2.1.0';
     const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
@@ -169,7 +169,7 @@ class Client
 
         return $result;
     }
-    
+
     /**
      * Count Orders
      *
@@ -319,7 +319,7 @@ class Client
             self::MESSAGE_BODY    => null
         );
     }
-    
+
     private function convertListProductsRequest($request)
     {
         $messageContent = array ();
@@ -419,7 +419,7 @@ class Client
             self::MESSAGE_BODY    => $messageContent
         );
     }
-    
+
     private function convertCountOrdersRequest($request)
     {
         $messageHeaders = array (
