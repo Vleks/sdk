@@ -514,7 +514,7 @@ class Client
     ############################################################################
     # CLIENT CONNECTION METHODS
     ############################################################################
-    
+
     private function invoke(array $converted)
     {
         $envelopeHeaders = $converted[self::MESSAGE_HEADERS];
@@ -524,22 +524,22 @@ class Client
 
         $envelopeHeaders = $this->addRequiredEnvelopeHeaders($envelopeHeaders);
         $converted[self::MESSAGE_HEADERS] = $envelopeHeaders;
-      
+
         # Variables for retrying requests
         $shouldRetry     = false;
         $retries         = 0;
-       
+
         do {
             $response    = $this->performRequest($converted);
             $statusCode  = $response['Status'];
             $shouldRetry = false;
-        
+
             if(500 <= $statusCode) {
-                
+
                 # Will throw an exception if applicable, otherwise retry is allowed
                 $this->reportAnyErrors($response['ResponseBody'], $response['Status'], $response['ResponseHeaders'], false);
                 $shouldRetry = true;
-                
+
                 if($shouldRetry && $retries < $this->max_retries) {
                     $this->pauseOnRetry(++$retries);
                 } else {
@@ -574,7 +574,7 @@ class Client
             'StatusCode'      => $status,
             'ResponseHeaders' => $responseHeaders
         );
-        
+
         libxml_use_internal_errors(true);
         $xmlBody = simplexml_load_string($responseBody);
 
@@ -701,20 +701,20 @@ class Client
 
     private function addRequiredHttpHeaders($message)
     {
-        $requestDate = gmdate('Y-m-d\TH:i:s\Z');
+        $timestamp   = floor(microtime(true)/30);
         $contentType = 'application/xml; charset=UTF-8';
 
         $signatureBase  = "POST\n";
         $signatureBase .= $contentType . "\n";
-        $signatureBase .= $requestDate . "\n";
-        $signatureBase .= 'x-vleksapi-date:' . $requestDate . "\n";
+        $signatureBase .= $timestamp . "\n";
+        $signatureBase .= 'x-vleksapi-date:' . $timestamp . "\n";
         $signatureBase .= $message;
 
         $signature = sprintf('%s:%s', $this->publicKey, base64_encode(hash_hmac('SHA256', $signatureBase, $this->privateKey, true)));
 
         return array (
             'Content-Type: ' . $contentType,
-            'X-VleksAPI-Date: ' . $requestDate,
+            'X-VleksAPI-Date: ' . $timestamp,
             'X-VleksAPI-Signature: ' . $signature,
             'Expect: ',
             'Accept: ',
