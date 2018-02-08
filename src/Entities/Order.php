@@ -17,7 +17,8 @@ class Order extends BaseModel
             'ChannelID'                 => array ('value' => null, 'type' => 'string'),
             'IsBusinessOrder'           => array ('value' => null, 'type' => 'bool'),
             'IsFulfillmentOrder'        => array ('value' => null, 'type' => 'bool'),
-            'Address'                   => array ('value' => null, 'type' => AddressData::class),
+            'BillingAddress'            => array ('value' => null, 'type' => AddressData::class),
+            'ShippingAddress'           => array ('value' => null, 'type' => AddressData::class),
             'NumberOfShipments'         => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsShipped'      => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsUnshipped'    => array ('value' => null, 'type' => 'int'),
@@ -140,20 +141,36 @@ class Order extends BaseModel
         return !is_null($this->fields['IsBusinessOrder']['value']);
     }
 
-    public function setAddress ($value)
+    public function setBillingAddress ($value)
     {
-        $this->fields['Address']['value'] = $value;
+        $this->fields['BillingAddress']['value'] = $value;
         return $this;
     }
 
-    public function getAddress ()
+    public function getBillingAddress ()
     {
-        return $this->fields['Address']['value'];
+        return $this->fields['BillingAddress']['value'];
     }
 
-    public function hasAddress ()
+    public function hasBillingAddress ()
     {
-        return !is_null($this->fields['Address']['value']);
+        return !is_null($this->fields['BillingAddress']['value']);
+    }
+
+    public function setShippingAddress ($value)
+    {
+        $this->fields['ShippingAddress']['value'] = $value;
+        return $this;
+    }
+
+    public function getShippingAddress ()
+    {
+        return $this->fields['ShippingAddress']['value'];
+    }
+
+    public function hasShippingAddress ()
+    {
+        return !is_null($this->fields['ShippingAddress']['value']);
     }
 
     public function setNumberOfShipments ($value)

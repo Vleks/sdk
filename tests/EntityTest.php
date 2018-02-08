@@ -9,26 +9,26 @@ class EntityTest extends TestCase
     {
         if(!is_null($individual_fields)) {
             $class = new $entity();
-            
+
             foreach ($individual_fields as $propertyName => $value) {
                 // Setter & Getter & Has
                 $setMethod = 'set' . $propertyName;
                 $getMethod = 'get' . $propertyName;
                 $hasMethod = 'has' . $propertyName;
-                
+
                 // Test individual methods
                 $class->$setMethod($value);
                 $this->assertTrue($class->$hasMethod());
                 $this->assertEquals($class->$getMethod(), $value);
                 $this->assertEquals($class->$propertyName, $value);
             }
-            
+
             // Test direct creation of entity
             $class = new $entity($individual_fields);
-            
+
             foreach ($individual_fields as $propertyName => $value) {
                 $hasMethod = 'has' . $propertyName;
-                
+
                 $this->assertTrue($class->$hasMethod());
                 $this->assertEquals($class->$propertyName, $value);
             }
@@ -37,21 +37,21 @@ class EntityTest extends TestCase
         if(!is_null($entity_fields)) {
              foreach ($entity_fields as $entity_name => $entityFields) {
                 $class = new $entity();
-                    
-                // Setter & Getter & Has 
+
+                // Setter & Getter & Has
                 $setMethod = 'set' . $entity_name;
                 $getMethod = 'get' . $entity_name;
                 $hasMethod = 'has' . $entity_name;
-                 
+
                 // Test nested entities
                 $this->assertFalse($class->$hasMethod());
                 $class->$setMethod($entityFields);
                 $this->assertTrue($class->$hasMethod());
                 $this->assertInternalType('array', $class->$getMethod());
-            }   
-        }        
+            }
+        }
     }
-    
+
     public function testAddressData()
     {
         $entity = Entities\AddressData::class;
@@ -66,11 +66,11 @@ class EntityTest extends TestCase
             'City'              => 'testValue',
             'Email'             => 'testValue'
         );
-        
+
         $entity_fields = array(
             'Company' => array('CompanyName' => 'testValue')
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
@@ -82,18 +82,18 @@ class EntityTest extends TestCase
             'Property'  => 'testValue',
             'Value'     => 'testValue'
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
     public function testAttributeList()
     {
         $entity = Entities\AttributesList::class;
-        
+
         $entity_fields = array(
             'Attribute' => array('Property' => 'testValue')
         );
-        
+
         $this->entityTestLoop($entity, null, $entity_fields);
     }
 
@@ -107,7 +107,7 @@ class EntityTest extends TestCase
             'VATNumber'     => 'testValue',
             'CoCNumber'     => 'testValue'
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -118,7 +118,7 @@ class EntityTest extends TestCase
         $individual_fields = array(
             'EAN'    => array('testValue', 'testValue', 'testValue')
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -131,7 +131,7 @@ class EntityTest extends TestCase
             'StatusID'  => 'testValue',
             'Status'    => 'testValue'
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -144,12 +144,12 @@ class EntityTest extends TestCase
             'StatusID'  => 'testValue',
             'Status'    => 'testValue'
         );
-        
+
         $entity_fields = array(
             'Response' => array('Message' => 'testValue')
         );
-        
-        $this->entityTestLoop($entity, $individual_fields, $entity_fields);        
+
+        $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
     public function testOrder()
@@ -168,14 +168,15 @@ class EntityTest extends TestCase
             'NumberOfItemsShipped'      => 5,
             'NumberOfItemsUnshipped'    => 5
         );
-        
+
         $entity_fields = array(
-            'Address'       => array('SalutationCode' => 'testValue'),
-            'OrderTotal'    => array('Currency' => 'EUR'),
-            'OrderLines'    => array('OrderLine' => array('Type' => 'testValue'))
+            'BillingAddress'  => array('SalutationCode' => 'testValue'),
+            'ShippingAddress' => array('SalutationCode' => 'testValue'),
+            'OrderTotal'      => array('Currency' => 'EUR'),
+            'OrderLines'      => array('OrderLine' => array('Type' => 'testValue'))
         );
-        
-        $this->entityTestLoop($entity, $individual_fields, $entity_fields);    
+
+        $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
     public function testOrderLine()
@@ -191,23 +192,23 @@ class EntityTest extends TestCase
             'QuantityShipped'   => 5,
             'Title'             => 'testValue'
         );
-        
+
         $entity_fields = array(
             'ItemPrice'     => array('Currency' => 'EUR')
         );
-        
-        $this->entityTestLoop($entity, $individual_fields, $entity_fields);   
+
+        $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
     public function testOrderLines()
     {
         $entity = Entities\OrderLines::class;
-        
+
         $entity_fields = array(
             'OrderLine' => array('Type' => 'testValue')
         );
-        
-        $this->entityTestLoop($entity, null, $entity_fields);   
+
+        $this->entityTestLoop($entity, null, $entity_fields);
     }
 
     public function testPrice()
@@ -217,9 +218,9 @@ class EntityTest extends TestCase
         $individual_fields = array(
             'Currency'      => 'testValue',
             'Amount'        => 5.5
-        );        
-        
-        $this->entityTestLoop($entity, $individual_fields);   
+        );
+
+        $this->entityTestLoop($entity, $individual_fields);
     }
 
     public function testPriceAndPercentage()
@@ -230,9 +231,9 @@ class EntityTest extends TestCase
             'Currency'      => 'testValue',
             'Amount'        => 5.5,
             'Percentage'    => 5.5
-        );        
-        
-        $this->entityTestLoop($entity, $individual_fields); 
+        );
+
+        $this->entityTestLoop($entity, $individual_fields);
     }
 
     public function testProduct()
@@ -257,7 +258,7 @@ class EntityTest extends TestCase
             'Weight'          => 5,
             'TaxPercentage'   => 'testValue'
         );
-        
+
         $entity_fields = array(
             'EANList'           => array('testValue', 'testValue', 'testValue'),
             'PurchasePrice'     => array('Currency' => 'testValue', 'Amount' => 5.5),
@@ -274,14 +275,14 @@ class EntityTest extends TestCase
             'Stock'             => array('StockLocation' => array('StoreID' => 'testValue')),
             'Store'             => array('StoreID'  => array('StoreID' => 'testValue'))
         );
-        
-        $this->entityTestLoop($entity, $individual_fields, $entity_fields);  
+
+        $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
     public function testResponse()
     {
         $entity = Entities\Response::class;
-        
+
         $individual_fields = array(
             'Message'       => 'testValue',
             'OrderID'       => 'testValue',
@@ -292,7 +293,7 @@ class EntityTest extends TestCase
             'EAN'           => 'testValue',
             'Status'        => 'testValue'
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -305,25 +306,25 @@ class EntityTest extends TestCase
             'OrderID'       => 'testValue',
             'SendDate'      => 'testValue'
         );
-        
+
         $entity_fields = array(
             'Transport'     => array('TransporterCode' => 'testValue', 'TrackAndTrace' => 'testValue'),
             'Address'       => array('SalutationCode' => 'testValue'),
             'OrderLines'    => array('OrderLine' => array('Type' => 'testValue'))
         );
-        
-        $this->entityTestLoop($entity, $individual_fields, $entity_fields);  
+
+        $this->entityTestLoop($entity, $individual_fields, $entity_fields);
     }
 
     public function testStockList()
     {
         $entity = Entities\StockList::class;
-        
+
         $entity_fields = array(
             'StockLocation' => array('LocationID' => 'testValue', 'QuantityInStock' => 5)
         );
-        
-        $this->entityTestLoop($entity, null, $entity_fields); 
+
+        $this->entityTestLoop($entity, null, $entity_fields);
     }
 
     public function testStockLocation()
@@ -334,7 +335,7 @@ class EntityTest extends TestCase
             'LocationID'        => 'testValue',
             'QuantityInStock'   => 5
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -345,7 +346,7 @@ class EntityTest extends TestCase
         $individual_fields = array(
             'StoreID'   => array('testValue')
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 
@@ -357,7 +358,7 @@ class EntityTest extends TestCase
             'TransporterCode'   => 'testValue',
             'TrackAndTrace'     => 'testValue'
         );
-        
+
         $this->entityTestLoop($entity, $individual_fields);
     }
 }
