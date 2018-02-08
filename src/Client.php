@@ -19,6 +19,7 @@ class Client
     private $testMode            = false;
     private $skipSslVerification = false;
     private $responseHeaders;
+    private $max_retries         = 3;
 
     public function __construct(
         $publicKey,
@@ -513,7 +514,7 @@ class Client
     ############################################################################
     # CLIENT CONNECTION METHODS
     ############################################################################
-
+    
     private function invoke(array $converted)
     {
         $envelopeHeaders = $converted[self::MESSAGE_HEADERS];
@@ -523,9 +524,30 @@ class Client
 
         $envelopeHeaders = $this->addRequiredEnvelopeHeaders($envelopeHeaders);
         $converted[self::MESSAGE_HEADERS] = $envelopeHeaders;
+      
+        # Variables for retrying requests
+        $shouldRetry     = false;
+        $retries         = 0;
+       
+        do {
+            $response    = $this->performRequest($converted);
+            $statusCode  = $response['Status'];
+            $shouldRetry = false;
+        
+            if(500 <= $statusCode) {
+                
+                # Will throw an exception if applicable, otherwise retry is allowed
+                $this->reportAnyErrors($response['ResponseBody'], $response['Status'], $response['ResponseHeaders'], false);
+                $shouldRetry = true;
+                
+                if($shouldRetry && $retries < $this->max_retries) {
+                    $this->pauseOnRetry(++$retries);
+                } else {
+                    $shouldRetry = false;
+                }
+            }
+        } while($shouldRetry);
 
-        $response   = $this->performRequest($converted);
-        $statusCode = $response['Status'];
 
         $this->reportAnyErrors($response['ResponseBody'], $response['Status'], $response['ResponseHeaders']);
 
@@ -535,7 +557,13 @@ class Client
         );
     }
 
-    private function reportAnyErrors($responseBody, $status, array $responseHeaders)
+    private function pauseOnRetry($retries)
+    {
+        $delay = (int) (pow(4, $retries) * 100000);
+        usleep($delay);
+    }
+
+    private function reportAnyErrors($responseBody, $status, array $responseHeaders, $checkFor500 = true)
     {
         if (false === $responseBody && empty($responseHeaders) && 0 === $status) {
             throw new Exceptions\ClientException('Unable to connect to the API, please check your configuration settings');
@@ -546,7 +574,7 @@ class Client
             'StatusCode'      => $status,
             'ResponseHeaders' => $responseHeaders
         );
-
+        
         libxml_use_internal_errors(true);
         $xmlBody = simplexml_load_string($responseBody);
 
@@ -573,7 +601,7 @@ class Client
                     }
                 }
             }
-        } else {
+        } elseif ($checkFor500) {
             if (500 <= $status) {
                 $throw = true;
 
