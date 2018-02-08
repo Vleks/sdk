@@ -27,6 +27,6 @@ class Stocklist extends Model
 
     public function hasStockLocation ()
     {
-        return !is_null($this->fields['StockLocation']['value']);
+        return !empty($this->fields['StockLocation']['value']);
     }
 }

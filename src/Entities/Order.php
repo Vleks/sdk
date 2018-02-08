@@ -16,12 +16,14 @@ class Order extends BaseModel
             'Status'                    => array ('value' => null, 'type' => 'string'),
             'ChannelID'                 => array ('value' => null, 'type' => 'string'),
             'IsBusinessOrder'           => array ('value' => null, 'type' => 'bool'),
-            'Address'                   => array ('value' => null, 'type' => AddressData::class),
+            'IsFulfillmentOrder'        => array ('value' => null, 'type' => 'bool'),
+            'BillingAddress'            => array ('value' => null, 'type' => AddressData::class),
+            'ShippingAddress'           => array ('value' => null, 'type' => AddressData::class),
             'NumberOfShipments'         => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsShipped'      => array ('value' => null, 'type' => 'int'),
             'NumberOfItemsUnshipped'    => array ('value' => null, 'type' => 'int'),
             'OrderTotal'                => array ('value' => null, 'type' => Price::class),
-            'OrderLines'                => array ('value' => array (), 'type' => array (OrderLines::class))
+            'OrderLines'                => array ('value' => null, 'type' => OrderLines::class)
         );
 
         parent::__construct($data);
@@ -43,20 +45,20 @@ class Order extends BaseModel
         return !is_null($this->fields['OrderID']['value']);
     }
 
-    public function setReasonInfo ($value)
+    public function setReasonCode ($value)
     {
-        $this->fields['ReasonInfo']['value'] = $value;
+        $this->fields['ReasonCode']['value'] = $value;
         return $this;
     }
 
-    public function getReasonInfo ()
+    public function getReasonCode ()
     {
-        return $this->fields['ReasonInfo']['value'];
+        return $this->fields['ReasonCode']['value'];
     }
 
-    public function hasReasonInfo ()
+    public function hasReasonCode ()
     {
-        return !is_null($this->fields['ReasonInfo']['value']);
+        return !is_null($this->fields['ReasonCode']['value']);
     }
 
     public function setPurchaseDate ($value)
@@ -123,20 +125,52 @@ class Order extends BaseModel
         return !is_null($this->fields['IsBusinessOrder']['value']);
     }
 
-    public function setAddress ($value)
+    public function setIsFulfillmentOrder ($value)
     {
-        $this->fields['Address']['value'] = $value;
+        $this->fields['IsBusinessOrder']['value'] = (bool) $value;
         return $this;
     }
 
-    public function getAddress ()
+    public function getIsFulfillmentOrder ()
     {
-        return $this->fields['Address']['value'];
+        return $this->fields['IsBusinessOrder']['value'];
     }
 
-    public function hasAddress ()
+    public function hasIsFulfillmentOrder ()
     {
-        return !is_null($this->fields['Address']['value']);
+        return !is_null($this->fields['IsBusinessOrder']['value']);
+    }
+
+    public function setBillingAddress ($value)
+    {
+        $this->fields['BillingAddress']['value'] = $value;
+        return $this;
+    }
+
+    public function getBillingAddress ()
+    {
+        return $this->fields['BillingAddress']['value'];
+    }
+
+    public function hasBillingAddress ()
+    {
+        return !is_null($this->fields['BillingAddress']['value']);
+    }
+
+    public function setShippingAddress ($value)
+    {
+        $this->fields['ShippingAddress']['value'] = $value;
+        return $this;
+    }
+
+    public function getShippingAddress ()
+    {
+        return $this->fields['ShippingAddress']['value'];
+    }
+
+    public function hasShippingAddress ()
+    {
+        return !is_null($this->fields['ShippingAddress']['value']);
     }
 
     public function setNumberOfShipments ($value)

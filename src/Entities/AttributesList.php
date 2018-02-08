@@ -14,33 +14,33 @@ class AttributesList extends Model
         parent::__construct($data);
     }
 
-    public function setAttribute (array $value)
+    public function setAttribute(array $value)
     {
         $this->fields['Attribute']['value'] = $value;
         return $this;
     }
 
-    public function getAttribute ()
+    public function getAttribute()
     {
         return $this->fields['Attribute']['value'];
     }
 
-    public function hasAttribute ()
+    public function hasAttribute()
     {
-        return !is_null($this->fields['Attribute']['value']);
+        return !empty($this->fields['Attribute']['value']);
     }
 
-    public function setAttributes (array $value)
+    public function setAttributes(array $value)
     {
         return $this->setAttribute($value);
     }
 
-    public function getAttributes ()
+    public function getAttributes()
     {
         return $this->getAttribute();
     }
 
-    public function hasAttributes ()
+    public function hasAttributes()
     {
         return $this->hasAttribute();
     }

@@ -515,7 +515,7 @@ class Product extends Model
 
     public function hasStock ()
     {
-        return !is_null($this->fields['Stock']['value']);
+        return !empty($this->fields['Stock']['value']);
     }
 
     public function setStore ($value)
@@ -531,6 +531,6 @@ class Product extends Model
 
     public function hasStore ()
     {
-        return !is_null($this->fields['Store']['value']);
+        return !empty($this->fields['Store']['value']);
     }
 }
