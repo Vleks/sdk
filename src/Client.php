@@ -8,7 +8,7 @@ use Vleks\SDK\Enumerables;
 class Client
 {
     const VERSION         = '1.0.0';
-    const ENDPOINT        = 'https://%s/api/vleks/2017-05/';
+    const ENDPOINT        = 'http://%s/api/vleks/2017-05/';
     const MESSAGE_HEADERS = 'HEADERS';
     const MESSAGE_BODY    = 'BODY';
 
@@ -19,6 +19,7 @@ class Client
     private $testMode            = false;
     private $skipSslVerification = false;
     private $responseHeaders;
+    private $max_retries         = 3;
 
     public function __construct(
         $publicKey,
@@ -513,7 +514,7 @@ class Client
     ############################################################################
     # CLIENT CONNECTION METHODS
     ############################################################################
-
+    
     private function invoke(array $converted)
     {
         $envelopeHeaders = $converted[self::MESSAGE_HEADERS];
@@ -523,9 +524,30 @@ class Client
 
         $envelopeHeaders = $this->addRequiredEnvelopeHeaders($envelopeHeaders);
         $converted[self::MESSAGE_HEADERS] = $envelopeHeaders;
+      
+        # Variables for retrying requests
+        $shouldRetry     = false;
+        $retries         = 0;
+       
+        do {
+            $response    = $this->performRequest($converted);
+            $statusCode  = $response['Status'];
+            $shouldRetry = false;
+        
+            if(500 <= $statusCode) {
+                
+                # Will throw an exception if applicable, otherwise retry is allowed
+                $this->reportAnyErrors($response['ResponseBody'], $response['Status'], $response['ResponseHeaders'], false);
+                $shouldRetry = true;
+                
+                if($shouldRetry && $retries < $this->max_retries) {
+                    $this->pauseOnRetry(++$retries);
+                } else {
+                    $shouldRetry = false;
+                }
+            }
+        } while($shouldRetry);
 
-        $response   = $this->performRequest($converted);
-        $statusCode = $response['Status'];
 
         $this->reportAnyErrors($response['ResponseBody'], $response['Status'], $response['ResponseHeaders']);
 
@@ -535,14 +557,20 @@ class Client
         );
     }
 
-    private function reportAnyErrors($responseBody, $status, array $responseHeaders)
+    private function pauseOnRetry($retries)
+    {
+        $delay = (int) (pow(4, $retries) * 100000);
+        usleep($delay);
+    }
+
+    private function reportAnyErrors($responseBody, $status, array $responseHeaders, $checkFor500 = true)
     {
         $throw     = false;
         $exception = array (
             'StatusCode'      => $status,
             'ResponseHeaders' => $responseHeaders
         );
-
+        
         libxml_use_internal_errors(true);
         $xmlBody = simplexml_load_string($responseBody);
 
@@ -554,7 +582,7 @@ class Client
                 $exception['Severity'] = $xmlBody->Error->Severity;
                 $exception['Message']  = $xmlBody->Error->Message;
             }
-        } else {
+        } elseif ($checkFor500) {
             if (500 <= $status) {
                 $throw = true;
 
@@ -638,7 +666,7 @@ class Client
 
         $curlOptions = array(
             CURLOPT_URL            => $cluserUrl,
-            CURLOPT_PORT           => 443,
+            CURLOPT_PORT           => 80,
             CURLOPT_USERAGENT      => $userAgent,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $postFields,
